@@ -1,0 +1,19 @@
+simulation:
+  duration: 3600  # seconds
+  network:
+    delay:
+      mars_to_orbiter: 180  # seconds
+      orbiter_to_relay: 600  # seconds
+      relay_to_earth: 180  # seconds
+    error_rate: 0.05  # 5% packet loss
+
+visualization:
+  node_colors:
+    default: "lightblue"
+    active: "red"
+    completed: "green"
+  edge_colors:
+    default: "gray"
+    active: "green"
+  node_size: 500
+  figure_size: [10, 8]

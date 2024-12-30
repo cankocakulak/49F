@@ -1,0 +1,25 @@
+{
+    "nodes": [
+        {"id": "mars_rover", "type": "rover", "position": [0, 0]},
+        {"id": "mars_orbiter", "type": "satellite", "position": [0, 1]},
+        {"id": "relay_satellite", "type": "satellite", "position": [1, 1]},
+        {"id": "earth_station", "type": "station", "position": [2, 0]}
+    ],
+    "links": [
+        {
+            "source": "mars_rover",
+            "target": "mars_orbiter",
+            "delay": 180
+        },
+        {
+            "source": "mars_orbiter",
+            "target": "relay_satellite",
+            "delay": 600
+        },
+        {
+            "source": "relay_satellite",
+            "target": "earth_station",
+            "delay": 180
+        }
+    ]
+}

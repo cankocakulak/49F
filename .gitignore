@@ -1,0 +1,29 @@
+# Virtual Environment
+venv/
+env/
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+*.egg-info/
+*.egg
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# Notebooks
+.ipynb_checkpoints
+
+# Test
+.coverage
+htmlcov/
+
+# Project specific
+data/results/*
+!data/results/.gitkeep
