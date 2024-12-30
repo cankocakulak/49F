@@ -18,7 +18,23 @@ def main():
     
     # Run simulation
     test_message = "Hello from Mars! This is a test transmission."
-    simulator.simulate_transmission(test_message)
+    print("\nStarting simulation with test message...")
+    
+    # Run simulation from Mars Rover 1 to Earth Station 1
+    stats = simulator.simulate_transmission(
+        message=test_message,
+        source="mars_rover_1",
+        destination="earth_station_1"
+    )
+    
+    # Print final statistics
+    print("\nSimulation completed!")
+    print("\nFinal Statistics:")
+    print(f"Total Delay: {stats['total_delay']} seconds")
+    print(f"Total Retransmissions: {stats['total_retransmissions']}")
+    print(f"Number of Disruptions: {stats['disruptions']}")
+    print(f"Paths Attempted: {stats['paths_attempted']}/{stats['total_available_paths']}")
+    print(f"Final Path: {' -> '.join(stats['final_path'])}")
 
 if __name__ == "__main__":
     main()

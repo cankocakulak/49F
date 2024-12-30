@@ -1,31 +1,27 @@
 {
     "nodes": [
-        {"id": "mars_rover", "type": "rover", "position": [0, 0]},
-        {"id": "mars_orbiter", "type": "satellite", "position": [0, 1]},
-        {"id": "relay_satellite", "type": "satellite", "position": [1, 1]},
-        {"id": "earth_station", "type": "station", "position": [2, 0]}
+        {"id": "mars_rover_1", "type": "rover", "position": [0, 0]},
+        {"id": "mars_rover_2", "type": "rover", "position": [0.5, 0.2]},
+        {"id": "mars_base", "type": "base", "position": [0.3, 0.5]},
+        {"id": "mars_orbiter_1", "type": "satellite", "position": [0, 1]},
+        {"id": "mars_orbiter_2", "type": "satellite", "position": [0.5, 1.2]},
+        {"id": "deep_space_relay_1", "type": "satellite", "position": [1, 1]},
+        {"id": "deep_space_relay_2", "type": "satellite", "position": [1.5, 1.1]},
+        {"id": "earth_relay_1", "type": "satellite", "position": [2, 1]},
+        {"id": "earth_relay_2", "type": "satellite", "position": [2.2, 0.8]},
+        {"id": "earth_station_1", "type": "station", "position": [2, 0]},
+        {"id": "earth_station_2", "type": "station", "position": [2.5, 0.2]}
     ],
     "links": [
-        {
-            "source": "mars_rover",
-            "target": "mars_orbiter",
-            "delay": 180,
-            "distance": "400 km",
-            "distance_km": 400
-        },
-        {
-            "source": "mars_orbiter",
-            "target": "relay_satellite",
-            "delay": 600,
-            "distance": "225 million km",
-            "distance_km": 225000000
-        },
-        {
-            "source": "relay_satellite",
-            "target": "earth_station",
-            "delay": 180,
-            "distance": "400 km",
-            "distance_km": 400
-        }
+        {"source": "mars_rover_1", "target": "mars_base", "delay": 60, "distance": "100 km"},
+        {"source": "mars_rover_2", "target": "mars_base", "delay": 45, "distance": "80 km"},
+        {"source": "mars_base", "target": "mars_orbiter_1", "delay": 180, "distance": "400 km"},
+        {"source": "mars_base", "target": "mars_orbiter_2", "delay": 180, "distance": "400 km"},
+        {"source": "mars_orbiter_1", "target": "deep_space_relay_1", "delay": 600, "distance": "200M km"},
+        {"source": "mars_orbiter_2", "target": "deep_space_relay_2", "delay": 600, "distance": "200M km"},
+        {"source": "deep_space_relay_1", "target": "earth_relay_1", "delay": 600, "distance": "50M km"},
+        {"source": "deep_space_relay_2", "target": "earth_relay_2", "delay": 600, "distance": "50M km"},
+        {"source": "earth_relay_1", "target": "earth_station_1", "delay": 180, "distance": "400 km"},
+        {"source": "earth_relay_2", "target": "earth_station_2", "delay": 180, "distance": "400 km"}
     ]
 }

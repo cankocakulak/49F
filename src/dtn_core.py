@@ -1,34 +1,44 @@
-from dataclasses import dataclass
 from datetime import datetime
-from typing import Any, Optional
+from dataclasses import dataclass
+from typing import Optional
 
 @dataclass
 class Bundle:
-    """DTN'de kullanılacak temel veri paketi."""
     source: str
     destination: str
-    payload: Any
-    creation_timestamp: datetime = datetime.now()
-    expiry: Optional[datetime] = None
+    payload: str
+    creation_timestamp: datetime = None
+    id: Optional[str] = None
+    priority: int = 1
+    
+    def __post_init__(self):
+        if self.creation_timestamp is None:
+            self.creation_timestamp = datetime.now()
+        if self.id is None:
+            self.id = f"bundle_{self.creation_timestamp.strftime('%H%M%S')}"
+            
+    def __str__(self):
+        return f"Bundle {self.id}: {self.source} -> {self.destination}"
+        
+    def size(self) -> int:
+        """Return bundle size in bytes"""
+        return len(self.payload.encode())
 
 class DTNNode:
-    """DTN ağındaki bir düğümü temsil eder."""
     def __init__(self, node_id: str):
-        self.node_id = node_id
-        self.storage = []  # Store-and-Forward için basit depolama
-
-    def receive_bundle(self, bundle: Bundle) -> bool:
-        """Bundle'ı al ve depola."""
-        if bundle.destination == self.node_id:
-            print(f"Bundle delivered to destination: {self.node_id}")
-            return True
-        self.storage.append(bundle)
-        return True
-
-    def forward_bundle(self, next_hop: 'DTNNode') -> bool:
-        """Depolanan bundle'ı ilet."""
-        if not self.storage:
-            return False
+        self.id = node_id
+        self.buffer = []
+        self.max_buffer_size = 1024 * 1024  # 1MB default
         
-        bundle = self.storage.pop(0)
-        return next_hop.receive_bundle(bundle)
+    def store_bundle(self, bundle: Bundle) -> bool:
+        """Store bundle in node's buffer"""
+        if len(self.buffer) * 1024 < self.max_buffer_size:  # Assuming 1KB per bundle
+            self.buffer.append(bundle)
+            return True
+        return False
+        
+    def forward_bundle(self) -> Optional[Bundle]:
+        """Forward next bundle from buffer"""
+        if self.buffer:
+            return self.buffer.pop(0)
+        return None

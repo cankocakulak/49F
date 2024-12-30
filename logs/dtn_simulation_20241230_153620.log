@@ -1,0 +1,13 @@
+2024-12-30 15:36:23,200 - INFO - Network Event - PathsFound: {'num_paths': 1, 'paths': [['mars_rover_1', 'mars_base', 'mars_orbiter_1', 'deep_space_relay_1', 'earth_relay_1', 'earth_station_1']]}
+2024-12-30 15:36:23,201 - INFO - Network Event - AttemptingPath: {'path': ['mars_rover_1', 'mars_base', 'mars_orbiter_1', 'deep_space_relay_1', 'earth_relay_1', 'earth_station_1'], 'bundle': 'bundle_153623'}
+2024-12-30 15:36:23,201 - INFO - Bundle bundle_153623 - Transmission at mars_rover_1 -> mars_base (Success)
+Details: {'delay': 60, 'total_delay': 60, 'distance': '100 km', 'retransmissions': 0}
+2024-12-30 15:36:24,777 - INFO - Bundle bundle_153623 - Disruption at mars_base -> mars_orbiter_1 (Failed)
+Details: {'delay': 180, 'distance': '400 km'}
+2024-12-30 15:36:25,778 - INFO - Bundle bundle_153623 - Transmission at mars_orbiter_1 -> deep_space_relay_1 (Success)
+Details: {'delay': 600, 'total_delay': 660, 'distance': '200M km', 'retransmissions': 1}
+2024-12-30 15:36:27,355 - INFO - Bundle bundle_153623 - Transmission at deep_space_relay_1 -> earth_relay_1 (Success)
+Details: {'delay': 600, 'total_delay': 1260, 'distance': '50M km', 'retransmissions': 1}
+2024-12-30 15:36:28,927 - INFO - Bundle bundle_153623 - Transmission at earth_relay_1 -> earth_station_1 (Success)
+Details: {'delay': 180, 'total_delay': 1440, 'distance': '400 km', 'retransmissions': 1}
+2024-12-30 15:36:30,503 - INFO - Network Event - SimulationComplete: {'bundle_id': 'bundle_153623', 'total_delay': 1440, 'total_retransmissions': 1, 'final_path': ['mars_rover_1', 'mars_base', 'mars_orbiter_1', 'deep_space_relay_1', 'earth_relay_1', 'earth_station_1'], 'disruptions': 1}

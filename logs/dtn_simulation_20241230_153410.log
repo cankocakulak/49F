@@ -1,0 +1,4 @@
+2024-12-30 15:34:13,664 - INFO - Network Event - PathsFound: {'num_paths': 1, 'paths': [['mars_rover_1', 'mars_base', 'mars_orbiter_1', 'deep_space_relay_1', 'earth_relay_1', 'earth_station_1']]}
+2024-12-30 15:34:13,665 - INFO - Network Event - AttemptingPath: {'path': ['mars_rover_1', 'mars_base', 'mars_orbiter_1', 'deep_space_relay_1', 'earth_relay_1', 'earth_station_1'], 'bundle': 'bundle_153413'}
+2024-12-30 15:34:13,665 - INFO - Bundle bundle_153413 - Transmission at mars_rover_1 -> mars_base (Success)
+Details: {'delay': 60, 'total_delay': 60, 'distance': '100 km', 'retransmissions': 0}

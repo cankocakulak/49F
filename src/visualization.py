@@ -1,43 +1,109 @@
 import networkx as nx
 import matplotlib.pyplot as plt
-from typing import Dict, List
-from datetime import datetime
+from typing import Dict, List, Set
+import time
 
 class DTNVisualizer:
-    def __init__(self):
+    def __init__(self, config):
         self.G = nx.Graph()
         self.pos = None
-        self.current_step = 0
-        self.simulation_steps = []
-        self.fig = None
-        self.bundle_info = None
+        self.config = config
+        self.vis_params = config.get_visualization_params()
+        self.fig = plt.figure(figsize=self.vis_params["figure_size"])
         
     def create_network_graph(self, nodes: List[str], connections: List[tuple]) -> None:
-        """Create network topology using positions from JSON."""
+        """Create network topology."""
         self.G.add_nodes_from(nodes)
         self.G.add_edges_from(connections)
+        self.pos = nx.spring_layout(self.G, k=1, iterations=50)
         
-        # If we have topology data with positions, use it
-        if hasattr(self, 'topology'):
-            pos = {}
-            for node in self.topology['nodes']:
-                pos[node['id']] = node['position']
-            self.pos = pos
-        else:
-            # Fallback to spring layout if no positions defined
-            self.pos = nx.spring_layout(self.G, k=1, iterations=50)
-    
+    def update_simulation_state(self, current_path: List[str], 
+                              current_node: str,
+                              disrupted_links: Set[tuple],
+                              bundle_info: Dict):
+        """Update visualization with current simulation state."""
+        plt.clf()
+        
+        # Draw all nodes in default color
+        nx.draw_networkx_nodes(self.G, self.pos,
+                             node_color=self.vis_params["node_colors"]["default"],
+                             node_size=self.vis_params["node_size"])
+        
+        # Draw completed path nodes in green
+        current_idx = current_path.index(current_node)
+        completed_nodes = current_path[:current_idx]
+        if completed_nodes:
+            nx.draw_networkx_nodes(self.G, self.pos,
+                                 nodelist=completed_nodes,
+                                 node_color=self.vis_params["node_colors"]["completed"],
+                                 node_size=self.vis_params["node_size"])
+        
+        # Draw current node in red
+        nx.draw_networkx_nodes(self.G, self.pos,
+                             nodelist=[current_node],
+                             node_color=self.vis_params["node_colors"]["active"],
+                             node_size=self.vis_params["node_size"])
+        
+        # Draw edges with different colors based on status
+        for (source, target) in self.G.edges():
+            if (source, target) in disrupted_links or (target, source) in disrupted_links:
+                # Disrupted links in red dashed
+                nx.draw_networkx_edges(self.G, self.pos,
+                                     edgelist=[(source, target)],
+                                     edge_color='red',
+                                     style='dashed')
+            elif source in completed_nodes and target in completed_nodes:
+                # Completed path in green
+                nx.draw_networkx_edges(self.G, self.pos,
+                                     edgelist=[(source, target)],
+                                     edge_color=self.vis_params["edge_colors"]["active"])
+            else:
+                # Other links in default color
+                nx.draw_networkx_edges(self.G, self.pos,
+                                     edgelist=[(source, target)],
+                                     edge_color=self.vis_params["edge_colors"]["default"])
+        
+        # Draw labels
+        nx.draw_networkx_labels(self.G, self.pos)
+        
+        # Show bundle information
+        info_text = f"Bundle Status:\n"
+        info_text += f"ID: {bundle_info['id']}\n"
+        info_text += f"Current Node: {current_node}\n"
+        info_text += f"Total Delay: {bundle_info['total_delay']}s\n"
+        info_text += f"Retransmissions: {bundle_info['retransmissions']}\n"
+        info_text += f"Status: {bundle_info['status']}"
+        
+        plt.figtext(0.02, 0.02, info_text, fontsize=10,
+                   bbox=dict(facecolor='white', alpha=0.8))
+        
+        # Show network statistics
+        stats_text = f"Network Statistics:\n"
+        stats_text += f"Disrupted Links: {len(disrupted_links)}\n"
+        stats_text += f"Progress: {current_idx + 1}/{len(current_path)} hops"
+        
+        plt.figtext(0.02, 0.98, stats_text, fontsize=10,
+                   bbox=dict(facecolor='white', alpha=0.8),
+                   verticalalignment='top')
+        
+        plt.title("DTN Bundle Transmission Simulation")
+        plt.axis('off')
+        plt.tight_layout()
+        
+        # Update display
+        plt.draw()
+        plt.pause(0.5)  # Short pause to allow visualization to update
+        
     def visualize_network(self, title: str = "DTN Network Topology"):
         """Show initial network topology."""
-        self.fig = plt.figure(figsize=(12, 8))
+        plt.clf()
         
-        nx.draw_networkx_nodes(self.G, self.pos, 
-                             node_color='lightblue',
-                             node_size=2000)
+        nx.draw_networkx_nodes(self.G, self.pos,
+                             node_color=self.vis_params["node_colors"]["default"],
+                             node_size=self.vis_params["node_size"])
         
-        nx.draw_networkx_edges(self.G, self.pos, 
-                             edge_color='gray',
-                             width=1)
+        nx.draw_networkx_edges(self.G, self.pos,
+                             edge_color=self.vis_params["edge_colors"]["default"])
         
         nx.draw_networkx_labels(self.G, self.pos)
         
@@ -45,96 +111,4 @@ class DTNVisualizer:
         plt.axis('off')
         plt.tight_layout()
         plt.show(block=False)
-        plt.pause(3)
-        plt.close()
-
-    def on_keyboard(self, event):
-        """Handle keyboard events."""
-        if event.key == 'right' and self.current_step < len(self.simulation_steps) - 1:
-            self.current_step += 1
-            self.update_visualization()
-        elif event.key == 'left' and self.current_step > 0:
-            self.current_step -= 1
-            self.update_visualization()
-        elif event.key == 'q':
-            plt.close()
-
-    def update_visualization(self):
-        """Update the visualization based on current step."""
-        plt.clf()
-        current_node = self.simulation_steps[self.current_step]
-        path = self.simulation_steps
-        
-        # Draw all nodes in gray
-        nx.draw_networkx_nodes(self.G, self.pos,
-                             node_color='lightgray',
-                             node_size=2000)
-        
-        # Draw completed path in green
-        completed_path = path[:self.current_step]
-        if len(completed_path) > 1:
-            completed_edges = list(zip(completed_path[:-1], completed_path[1:]))
-            nx.draw_networkx_edges(self.G, self.pos,
-                                 edgelist=completed_edges,
-                                 edge_color='green',
-                                 width=2)
-        
-        # Draw remaining path in gray dashed
-        remaining_path = path[self.current_step:]
-        if len(remaining_path) > 1:
-            remaining_edges = list(zip(remaining_path[:-1], remaining_path[1:]))
-            nx.draw_networkx_edges(self.G, self.pos,
-                                 edgelist=remaining_edges,
-                                 edge_color='gray',
-                                 style='dashed',
-                                 width=1)
-        
-        # Draw active node in red
-        nx.draw_networkx_nodes(self.G, self.pos,
-                             nodelist=[current_node],
-                             node_color='red',
-                             node_size=2000)
-        
-        nx.draw_networkx_labels(self.G, self.pos)
-        
-        # Enhanced bundle info with distance
-        next_node = (self.simulation_steps[self.current_step + 1] 
-                    if self.current_step < len(self.simulation_steps) - 1 
-                    else None)
-        
-        info_text = f"Bundle Transfer Status:\n"
-        info_text += f"Source: {self.bundle_info['source']}\n"
-        info_text += f"Destination: {self.bundle_info['destination']}\n"
-        info_text += f"Current Node: {current_node}\n"
-        info_text += f"Step: {self.current_step + 1}/{len(self.simulation_steps)}\n"
-        info_text += f"\nTotal Distance: {self.bundle_info['total_distance']}"
-        info_text += f"\nTotal Time: {self.bundle_info['total_delay']}"
-        
-        if next_node:
-            delay = self.bundle_info.get('delays', {}).get((current_node, next_node), 0)
-            distance = self.bundle_info.get('distances', {}).get((current_node, next_node), "unknown")
-            info_text += f"\n\nNext hop:"
-            info_text += f"\nDistance: {distance}"
-            info_text += f"\nDelay: {delay//60} minutes {delay%60} seconds"
-        
-        info_text += "\n\nUse ← → keys to navigate\nPress 'q' to quit"
-        
-        plt.figtext(0.02, 0.02, info_text, fontsize=10, 
-                   bbox=dict(facecolor='white', alpha=0.8))
-        
-        plt.title(f"DTN Bundle Transmission - Step {self.current_step + 1}")
-        plt.axis('off')
-        plt.tight_layout()
-        plt.draw()
-
-    def simulate_transmission(self, path: List[str], bundle_info: Dict):
-        """Simulate the transmission with interactive controls."""
-        self.simulation_steps = path
-        self.bundle_info = bundle_info
-        self.current_step = 0
-        
-        self.fig = plt.figure(figsize=(12, 8))
-        self.fig.canvas.mpl_connect('key_press_event', self.on_keyboard)
-        
-        self.update_visualization()
-        plt.show()
+        plt.pause(3)  # Show initial topology for 3 seconds
