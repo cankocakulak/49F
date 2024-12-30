@@ -13,10 +13,19 @@ class DTNVisualizer:
         self.bundle_info = None
         
     def create_network_graph(self, nodes: List[str], connections: List[tuple]) -> None:
-        """Create network topology."""
+        """Create network topology using positions from JSON."""
         self.G.add_nodes_from(nodes)
         self.G.add_edges_from(connections)
-        self.pos = nx.spring_layout(self.G, k=1, iterations=50)
+        
+        # If we have topology data with positions, use it
+        if hasattr(self, 'topology'):
+            pos = {}
+            for node in self.topology['nodes']:
+                pos[node['id']] = node['position']
+            self.pos = pos
+        else:
+            # Fallback to spring layout if no positions defined
+            self.pos = nx.spring_layout(self.G, k=1, iterations=50)
     
     def visualize_network(self, title: str = "DTN Network Topology"):
         """Show initial network topology."""
@@ -88,13 +97,27 @@ class DTNVisualizer:
         
         nx.draw_networkx_labels(self.G, self.pos)
         
-        # Show bundle info
+        # Enhanced bundle info with distance
+        next_node = (self.simulation_steps[self.current_step + 1] 
+                    if self.current_step < len(self.simulation_steps) - 1 
+                    else None)
+        
         info_text = f"Bundle Transfer Status:\n"
         info_text += f"Source: {self.bundle_info['source']}\n"
         info_text += f"Destination: {self.bundle_info['destination']}\n"
         info_text += f"Current Node: {current_node}\n"
-        info_text += f"Step: {self.current_step + 1}/{len(path)}\n\n"
-        info_text += "Use ← → keys to navigate\nPress 'q' to quit"
+        info_text += f"Step: {self.current_step + 1}/{len(self.simulation_steps)}\n"
+        info_text += f"\nTotal Distance: {self.bundle_info['total_distance']}"
+        info_text += f"\nTotal Time: {self.bundle_info['total_delay']}"
+        
+        if next_node:
+            delay = self.bundle_info.get('delays', {}).get((current_node, next_node), 0)
+            distance = self.bundle_info.get('distances', {}).get((current_node, next_node), "unknown")
+            info_text += f"\n\nNext hop:"
+            info_text += f"\nDistance: {distance}"
+            info_text += f"\nDelay: {delay//60} minutes {delay%60} seconds"
+        
+        info_text += "\n\nUse ← → keys to navigate\nPress 'q' to quit"
         
         plt.figtext(0.02, 0.02, info_text, fontsize=10, 
                    bbox=dict(facecolor='white', alpha=0.8))

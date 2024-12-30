@@ -3,26 +3,22 @@ import os
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 from src.network_simulator import SimpleNetworkSimulator
-from src.visualization import DTNVisualizer
 
 def main():
-    # Simülatörü oluştur
+    # Create simulator
     simulator = SimpleNetworkSimulator()
     
-    # Ağı kur
-    simulator.setup_mars_earth_network()
+    # Setup network
+    if not simulator.setup_mars_earth_network():
+        print("Failed to setup network. Exiting...")
+        return
     
-    # Temel topolojiyi görselleştir
+    # Show initial network topology
     simulator.visualizer.visualize_network(title="Mars-Earth DTN Network")
     
-    # Test mesajı gönder
-    message = "Hello from Mars! This is a test transmission."
-    print(f"\nStarting transmission simulation...")
-    print(f"Message: {message}\n")
-    
-    simulator.simulate_transmission(message)
-    
-    print("\nSimulation completed!")
+    # Run simulation
+    test_message = "Hello from Mars! This is a test transmission."
+    simulator.simulate_transmission(test_message)
 
 if __name__ == "__main__":
     main()

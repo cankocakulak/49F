@@ -9,17 +9,23 @@
         {
             "source": "mars_rover",
             "target": "mars_orbiter",
-            "delay": 180
+            "delay": 180,
+            "distance": "400 km",
+            "distance_km": 400
         },
         {
             "source": "mars_orbiter",
             "target": "relay_satellite",
-            "delay": 600
+            "delay": 600,
+            "distance": "225 million km",
+            "distance_km": 225000000
         },
         {
             "source": "relay_satellite",
             "target": "earth_station",
-            "delay": 180
+            "delay": 180,
+            "distance": "400 km",
+            "distance_km": 400
         }
     ]
 }
