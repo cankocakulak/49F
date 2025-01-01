@@ -126,94 +126,142 @@ class DTNResultsAnalyzer:
             return f"{total_distance:.1f} km"
 
     def _create_detailed_analysis(self, stats, sim_dir):
-        """Create detailed performance analysis."""
-        # Calculate key metrics
-        total_attempts = stats['total_retransmissions'] + 1  # +1 for successful transmission
-        success_rate = (1 / total_attempts) * 100 if total_attempts > 0 else 100
-        avg_delay_per_hop = stats['total_delay'] / len(stats['final_path'])
-        storage_efficiency = (stats['disruptions'] / stats['max_stored_bundles'] 
-                            if stats['max_stored_bundles'] > 0 else 0)
+        """Create detailed performance analysis with focus on DTN advantages."""
+        # Calculate DTN efficiency metrics
+        total_data_sent = len(stats['final_path']) * 1  # 1 bundle per hop
+        retransmission_overhead = stats['total_retransmissions']
+        storage_events = stats['total_storage_events']
         
-        # Create text report
+        # Calculate theoretical TCP/IP behavior
+        tcp_restarts = 0
+        tcp_total_data = 0
+        tcp_total_delay = 0
+        
+        for i in range(len(stats['final_path']) - 1):
+            node1, node2 = stats['final_path'][i], stats['final_path'][i + 1]
+            for link in self.topology['links']:
+                if (link['source'] == node1 and link['target'] == node2) or \
+                   (link['source'] == node2 and link['target'] == node1):
+                    delay = link['delay']
+                    distance = link['distance']
+                    
+                    if 'M km' in distance:  # Deep space links
+                        # TCP would likely timeout and restart
+                        tcp_restarts += stats['disruptions']  # Each disruption causes restart
+                        tcp_total_delay += delay * (tcp_restarts + 1)  # Cumulative delays
+                        tcp_total_data += (i + 1) * tcp_restarts  # Resend from beginning
+                    else:  # Near space links
+                        tcp_total_delay += delay
+                        tcp_total_data += 1
+        
         report = f"""DTN Performance Analysis
 ======================
 Timestamp: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}
 
-Transmission Efficiency
-----------------------
-- Success Rate: {success_rate:.2f}%
-- Total Retransmissions: {stats['total_retransmissions']}
+DTN Efficiency Metrics
+---------------------
+- Total Path Length: {len(stats['final_path'])} hops
+- Data Units Transmitted: {total_data_sent} bundles
+- Retransmission Overhead: {retransmission_overhead} bundles
+- Storage Events: {storage_events}
 - Disruptions Handled: {stats['disruptions']}
-- Transmission Attempts: {total_attempts}
 
-Delay Analysis
--------------
-- Total Delay: {stats['total_delay']} seconds ({stats['total_delay']/60:.1f} minutes)
-- Average Delay per Hop: {avg_delay_per_hop:.2f} seconds
-- Path Length: {len(stats['final_path'])} hops
+Resource Utilization
+------------------
+- Storage Points Used: {len(stats['buffer_states'])} nodes
+- Maximum Stored Bundles: {stats['max_stored_bundles']}
+- Buffer States: {stats['buffer_states']}
+- Recovery Success Rate: {(stats['successful_recoveries'] / stats['recovery_attempts'] * 100 if stats['recovery_attempts'] > 0 else 100):.1f}%
+
+Time Analysis
+------------
+- Total Transmission Time: {stats['total_delay']} seconds ({stats['total_delay']/60:.1f} minutes)
+- Average Hop Delay: {stats['total_delay'] / len(stats['final_path']):.2f} seconds
+- Recovery Time: {stats['avg_recovery_time']:.1f} seconds per disruption
 - Total Distance: {self._calculate_total_distance(stats['final_path'])}
 
-Storage Utilization
-------------------
-- Maximum Stored Bundles: {stats['max_stored_bundles']}
-- Storage Efficiency: {storage_efficiency:.2f} bundles/disruption
-- Total Storage Events: {stats['disruptions']}
-
-Path Analysis
-------------
-- Paths Attempted: {stats['paths_attempted']}/{stats['total_available_paths']}
-- Final Path: {' -> '.join(stats['final_path'])}
-- Disrupted Links: {stats.get('disrupted_links', [])}
-
-Network Performance
+Disruption Handling
 -----------------
-- Average Transmission Success: {success_rate:.1f}%
-- Failed Transmissions: {stats['total_retransmissions']}
-- Disruption Recovery Time: {stats.get('avg_recovery_time', 0):.1f} seconds
+- Disrupted Links: {stats['disrupted_links']}
+- Recovery Attempts: {stats['recovery_attempts']}
+- Successful Recoveries: {stats['successful_recoveries']}
+- Average Recovery Time: {stats['avg_recovery_time']:.1f} seconds
 
-Comparison with TCP/IP
----------------------
-- DTN Total Time: {stats['total_delay']} seconds
-- Estimated TCP/IP Time: {stats['total_delay'] * 2.5} seconds
-- Time Saved: {(stats['total_delay'] * 2.5) - stats['total_delay']} seconds
-- Reliability Improvement: {success_rate - 40:.1f}% (compared to TCP/IP est.)
+DTN vs TCP/IP Comparison
+----------------------
+1. Data Transmission Efficiency:
+   - DTN Total Data Sent: {total_data_sent + retransmission_overhead} bundles
+   - TCP/IP Estimated Data: {tcp_total_data} units (with restarts)
+   - Data Overhead Saved: {tcp_total_data - (total_data_sent + retransmission_overhead)} units
+
+2. Time Efficiency:
+   - DTN Total Time: {stats['total_delay']} seconds
+   - TCP/IP Estimated Time: {tcp_total_delay} seconds
+   - Time Saved: {tcp_total_delay - stats['total_delay']} seconds
+
+3. Key DTN Advantages:
+   - Partial Progress Preserved: {storage_events} times
+   - Restart Prevention: {tcp_restarts} full restarts avoided
+   - Local Recovery Success: {stats['successful_recoveries']} times
+
+Note: TCP/IP estimates consider:
+- Full restart requirements after timeouts
+- No store-and-forward capability
+- Cumulative impact of disruptions
+- Deep space communication challenges
 """
         
         with open(sim_dir / "detailed_analysis.txt", "w") as f:
             f.write(report)
             
     def _create_dtn_tcp_comparison(self, stats, sim_dir):
-        """Create DTN vs TCP/IP comparison visualization."""
-        fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(15, 6))
+        """Create DTN vs TCP/IP comparison visualization focusing on efficiency."""
+        fig, axes = plt.subplots(2, 2, figsize=(15, 12))
         
-        # 1. Delay Comparison
-        delay_data = {
-            'DTN': stats['total_delay'],
-            'TCP/IP (est.)': stats['total_delay'] * 2.5,  # Estimated with timeouts
+        # 1. Data Transmission Efficiency
+        ax1 = axes[0, 0]
+        total_dtn_data = len(stats['final_path']) + stats['total_retransmissions']
+        tcp_total_data = len(stats['final_path']) * (stats['disruptions'] + 1)
+        data_comparison = {
+            'DTN': total_dtn_data,
+            'TCP/IP (est.)': tcp_total_data
         }
-        sns.barplot(x=list(delay_data.keys()), y=list(delay_data.values()), ax=ax1)
-        ax1.set_title('Total Delay Comparison')
-        ax1.set_ylabel('Seconds')
+        sns.barplot(x=list(data_comparison.keys()), y=list(data_comparison.values()), ax=ax1)
+        ax1.set_title('Data Units Transmitted')
+        ax1.set_ylabel('Data Units')
         
-        # 2. Success Rate Comparison
-        # Fix: Calculate actual DTN success rate
-        dtn_success_rate = 100.0  # If we reached here, transmission was successful
-        if stats['total_retransmissions'] > 0:
-            dtn_success_rate = (stats['total_delay'] / 
-                              (stats['total_delay'] + stats['total_retransmissions'] * stats['total_delay'])) * 100
-            
-        success_data = {
-            'DTN': dtn_success_rate,
-            # TCP/IP estimation based on Mars-Earth communication characteristics:
-            # - High latency (3-20 minutes one-way)
-            # - Frequent disruptions
-            # - TCP timeout issues with long RTTs
-            'TCP/IP (est.)': 40  # Based on research papers about deep space TCP performance
+        # 2. Time Efficiency
+        ax2 = axes[0, 1]
+        time_comparison = {
+            'DTN Total Time': stats['total_delay'],
+            'TCP/IP Est. Time': stats['total_delay'] * (stats['disruptions'] + 1)
         }
-        sns.barplot(x=list(success_data.keys()), y=list(success_data.values()), ax=ax2)
-        ax2.set_title('Success Rate Comparison')
-        ax2.set_ylabel('Percentage')
+        sns.barplot(x=list(time_comparison.keys()), y=list(time_comparison.values()), ax=ax2)
+        ax2.set_title('Total Transmission Time')
+        ax2.set_ylabel('Seconds')
+        
+        # 3. Disruption Handling
+        ax3 = axes[1, 0]
+        handling_data = {
+            'Storage Events': stats['total_storage_events'],
+            'Successful Recoveries': stats['successful_recoveries'],
+            'TCP/IP Restarts': stats['disruptions']  # Each disruption would cause TCP restart
+        }
+        sns.barplot(x=list(handling_data.keys()), y=list(handling_data.values()), ax=ax3)
+        ax3.set_title('Disruption Handling')
+        ax3.set_ylabel('Count')
+        
+        # 4. Resource Usage
+        ax4 = axes[1, 1]
+        resource_data = {
+            'Storage Points Used': len(stats['buffer_states']),
+            'Max Stored Bundles': stats['max_stored_bundles'],
+            'Retransmissions': stats['total_retransmissions']
+        }
+        sns.barplot(x=list(resource_data.keys()), y=list(resource_data.values()), ax=ax4)
+        ax4.set_title('Resource Utilization')
+        ax4.set_ylabel('Count')
         
         plt.tight_layout()
-        plt.savefig(sim_dir / "dtn_tcp_comparison.png")
+        plt.savefig(sim_dir / "protocol_comparison.png")
         plt.close()

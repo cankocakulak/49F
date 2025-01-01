@@ -3,7 +3,6 @@ from datetime import datetime, timedelta
 import time
 from src.dtn_core import DTNNode, Bundle
 from src.visualization import DTNVisualizer
-from src.performance_metrics import DTNMetricsAnalyzer
 import numpy as np
 from src.utils.config import ConfigLoader
 import random
