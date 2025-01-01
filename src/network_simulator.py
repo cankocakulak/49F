@@ -98,6 +98,9 @@ class SimpleNetworkSimulator:
         successful_delivery = False
         max_retries_per_link = 3
         stored_bundles = {node: [] for node in self.network_graph.nodes()}
+        recovery_times = []
+        disruptions_handled = 0
+        stored_bundles_count = 0
         
         while not successful_delivery:
             for current_path, estimated_delay in paths_with_delays:
@@ -115,63 +118,89 @@ class SimpleNetworkSimulator:
                     current_node = current_path[i]
                     next_node = current_path[i + 1]
                     
-                    # Check if link is currently disrupted
-                    if (current_node, next_node) in disrupted_links:
-                        retry_count = 0
-                        while retry_count < max_retries_per_link:
+                    # Get configuration parameters
+                    error_rate = self.config.get_simulation_params()["network"]["error_rate"]
+                    disruption_rate = self.config.get_simulation_params()["network"]["disruption_rate"]
+                    
+                    # Clear log of disruption check
+                    self.logger.log_network_event("DisruptionCheck", {
+                        "current_node": current_node,
+                        "next_node": next_node,
+                        "error_rate": error_rate,
+                        "disruption_rate": disruption_rate
+                    })
+                    
+                    # Separate checks for errors and disruptions
+                    is_error = random.random() < error_rate
+                    is_disrupted = random.random() < disruption_rate
+                    
+                    if is_error or is_disrupted:
+                        disrupted_links.add((current_node, next_node))
+                        disruptions_handled += 1
+                        
+                        # Store bundle at current node
+                        if bundle not in self.buffer.get(current_node, []):
+                            if current_node not in self.buffer:
+                                self.buffer[current_node] = []
+                            self.buffer[current_node].append(bundle)
+                            stored_bundles_count += 1
+                            
                             self.logger.log_bundle_event(
-                                "RetryingDisruptedLink",
+                                "BundleStored",
+                                bundle_id,
+                                current_node,
+                                details={
+                                    "reason": "error" if is_error else "disruption",
+                                    "buffer_size": len(self.buffer[current_node])
+                                }
+                            )
+                        
+                        # Try to recover
+                        recovery_start = time.time()
+                        retry_count = 0
+                        max_retries = 3
+                        
+                        while retry_count < max_retries:
+                            self.logger.log_bundle_event(
+                                "RecoveryAttempt",
                                 bundle_id,
                                 current_node,
                                 next_node,
-                                f"Attempt {retry_count + 1}/{max_retries_per_link}"
+                                f"Attempt {retry_count + 1}/{max_retries}"
                             )
                             
-                            # Store bundle if not already stored
-                            if bundle not in stored_bundles[current_node]:
-                                stored_bundles[current_node].append(bundle)
-                                self.logger.log_bundle_event(
-                                    "StoredBundle",
-                                    bundle_id,
-                                    current_node,
-                                    details={"buffer_size": len(stored_bundles[current_node])}
-                                )
-                            
-                            # Simulate waiting for link recovery
-                            time.sleep(2)
+                            time.sleep(1)  # Simulate recovery attempt
                             
                             # Check if link recovers
-                            if random.random() > self.config.get_simulation_params()["network"]["error_rate"]:
+                            if random.random() > (error_rate + disruption_rate) / 2:
+                                recovery_time = time.time() - recovery_start
+                                recovery_times.append(recovery_time)
+                                
+                                # Remove from buffer and continue
+                                if current_node in self.buffer:
+                                    self.buffer[current_node].remove(bundle)
                                 disrupted_links.remove((current_node, next_node))
-                                stored_bundles[current_node].remove(bundle)
+                                
                                 self.logger.log_bundle_event(
-                                    "LinkRecovered",
+                                    "RecoverySuccess",
                                     bundle_id,
                                     current_node,
-                                    next_node
+                                    next_node,
+                                    f"Recovered after {retry_count + 1} attempts"
                                 )
                                 break
                             
                             retry_count += 1
                             retransmissions += 1
-                            
-                            # Update visualization during retries
-                            self.visualizer.update_simulation_state(
-                                current_path=current_path,
-                                current_node=current_node,
-                                disrupted_links=disrupted_links,
-                                bundle_info={
-                                    "id": bundle_id,
-                                    "total_delay": total_delay,
-                                    "retransmissions": retransmissions,
-                                    "status": f"Retrying ({retry_count}/{max_retries_per_link})",
-                                    "stored_bundles": {k: len(v) for k, v in stored_bundles.items()},
-                                    "current_path_index": f"Path {paths_with_delays.index((current_path, estimated_delay)) + 1}/{len(paths_with_delays)}"
-                                }
-                            )
                         
-                        if (current_node, next_node) in disrupted_links:
-                            # If max retries reached, try next path
+                        if retry_count == max_retries:
+                            self.logger.log_bundle_event(
+                                "RecoveryFailed",
+                                bundle_id,
+                                current_node,
+                                next_node,
+                                "Max retries reached"
+                            )
                             break
                     
                     # Attempt transmission
@@ -239,10 +268,17 @@ class SimpleNetworkSimulator:
             "total_delay": total_delay,
             "total_retransmissions": retransmissions,
             "final_path": current_path,
-            "disruptions": len(disrupted_links),
+            "disruptions": disruptions_handled,
+            "disrupted_links": list(disrupted_links),
+            "avg_recovery_time": sum(recovery_times) / len(recovery_times) if recovery_times else 0,
+            "stored_bundles": stored_bundles_count,
+            "max_stored_bundles": max([len(bundles) for bundles in self.buffer.values()]) if self.buffer else 0,
             "paths_attempted": paths_with_delays.index((current_path, estimated_delay)) + 1,
             "total_available_paths": len(paths_with_delays),
-            "max_stored_bundles": max(len(bundles) for bundles in stored_bundles.values())
+            "buffer_states": {node: len(bundles) for node, bundles in self.buffer.items()},
+            "total_storage_events": stored_bundles_count,
+            "recovery_attempts": retransmissions,
+            "successful_recoveries": len(recovery_times)
         }
         
         self.logger.log_network_event("SimulationComplete", final_stats)

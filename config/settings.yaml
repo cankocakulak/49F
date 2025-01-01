@@ -5,8 +5,8 @@ simulation:
       mars_to_orbiter: 180  # seconds
       orbiter_to_relay: 600  # seconds
       relay_to_earth: 180  # seconds
-    error_rate: 0.5  # 30% packet loss
-    disruption_rate: 0.5  # 30% chance of disruption per link
+    error_rate: 0.3  # 30% packet loss
+    disruption_rate: 0.3  # 30% chance of disruption per link
 visualization:
   node_colors:
     default: "lightblue"

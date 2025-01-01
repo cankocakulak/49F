@@ -1,0 +1,13 @@
+2025-01-02 00:13:04,462 - INFO - Network Event - PathsFound: {'num_paths': 1, 'paths': [['mars_rover_1', 'mars_base', 'mars_orbiter_1', 'deep_space_relay_1', 'earth_relay_1', 'earth_station_1']], 'delays': {"['mars_rover_1', 'mars_base', 'mars_orbiter_1', 'deep_space_relay_1', 'earth_relay_1', 'earth_station_1']": 1620}}
+2025-01-02 00:13:04,463 - INFO - Network Event - AttemptingPath: {'path': ['mars_rover_1', 'mars_base', 'mars_orbiter_1', 'deep_space_relay_1', 'earth_relay_1', 'earth_station_1'], 'bundle': 'bundle_001304', 'estimated_delay': 1620}
+2025-01-02 00:13:04,463 - INFO - Bundle bundle_001304 - Transmission at mars_rover_1 -> mars_base (Success)
+Details: {'delay': 60, 'total_delay': 60, 'distance': '100 km', 'retransmissions': 0}
+2025-01-02 00:13:06,055 - INFO - Bundle bundle_001304 - Transmission at mars_base -> mars_orbiter_1 (Success)
+Details: {'delay': 180, 'total_delay': 240, 'distance': '400 km', 'retransmissions': 0}
+2025-01-02 00:13:07,610 - INFO - Bundle bundle_001304 - Transmission at mars_orbiter_1 -> deep_space_relay_1 (Success)
+Details: {'delay': 600, 'total_delay': 840, 'distance': '200M km', 'retransmissions': 0}
+2025-01-02 00:13:09,184 - INFO - Bundle bundle_001304 - Transmission at deep_space_relay_1 -> earth_relay_1 (Success)
+Details: {'delay': 600, 'total_delay': 1440, 'distance': '50M km', 'retransmissions': 0}
+2025-01-02 00:13:10,762 - INFO - Bundle bundle_001304 - Transmission at earth_relay_1 -> earth_station_1 (Success)
+Details: {'delay': 180, 'total_delay': 1620, 'distance': '400 km', 'retransmissions': 0}
+2025-01-02 00:13:12,336 - INFO - Network Event - SimulationComplete: {'bundle_id': 'bundle_001304', 'total_delay': 1620, 'total_retransmissions': 0, 'final_path': ['mars_rover_1', 'mars_base', 'mars_orbiter_1', 'deep_space_relay_1', 'earth_relay_1', 'earth_station_1'], 'disruptions': 0, 'paths_attempted': 1, 'total_available_paths': 1, 'max_stored_bundles': 0, 'disrupted_links': [], 'avg_recovery_time': 0, 'max_retry_count': 3, 'total_recovery_attempts': 0}

@@ -3,6 +3,7 @@ import os
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 from src.network_simulator import SimpleNetworkSimulator
+from src.analysis.results_analyzer import DTNResultsAnalyzer
 
 def main():
     # Create simulator
@@ -27,14 +28,12 @@ def main():
         destination="earth_station_1"
     )
     
-    # Print final statistics
+    # Analyze results
+    analyzer = DTNResultsAnalyzer()
+    analyzer.analyze_simulation(stats)
+    
     print("\nSimulation completed!")
-    print("\nFinal Statistics:")
-    print(f"Total Delay: {stats['total_delay']} seconds")
-    print(f"Total Retransmissions: {stats['total_retransmissions']}")
-    print(f"Number of Disruptions: {stats['disruptions']}")
-    print(f"Paths Attempted: {stats['paths_attempted']}/{stats['total_available_paths']}")
-    print(f"Final Path: {' -> '.join(stats['final_path'])}")
+    print("Results have been saved to data/results/")
 
 if __name__ == "__main__":
     main()
