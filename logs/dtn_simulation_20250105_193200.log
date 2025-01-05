@@ -1,0 +1,5 @@
+2025-01-05 19:32:00,777 - INFO - Network Event - LinkDisrupted: Link disrupted: mars_rover_1 -> mars_base
+2025-01-05 19:32:00,779 - INFO - Network Event - NewPath: Found new path from mars_rover_1: ['mars_rover_1', 'mars_rover_2', 'mars_base', 'mars_orbiter_1', 'deep_space_relay_1', 'earth_relay_1', 'earth_station_1']
+2025-01-05 19:32:04,529 - INFO - Network Event - LinkDisrupted: Link disrupted: mars_orbiter_1 -> deep_space_relay_1
+2025-01-05 19:32:04,533 - INFO - Network Event - NewPath: Found new path from mars_orbiter_1: ['mars_orbiter_1', 'mars_orbiter_2', 'deep_space_relay_2', 'earth_relay_2', 'earth_station_2', 'earth_station_1']
+2025-01-05 19:32:10,558 - INFO - Network Event - SimulationComplete: Simulation completed: Delivered

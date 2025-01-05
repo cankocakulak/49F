@@ -75,13 +75,13 @@ class DTNVisualizer(VisualizerBase):
         info_text += f"Retransmissions: {bundle_info['retransmissions']}\n"
         info_text += f"Status: {bundle_info['status']}"
         
-        plt.figtext(0.02, 0.02, info_text, fontsize=10,
-                   bbox=dict(facecolor='white', alpha=0.8))
+   #     plt.figtext(0.02, 0.02, info_text, fontsize=10,
+    #               bbox=dict(facecolor='white', alpha=0.8))
         
         # Show network statistics
         stats_text = f"Network Statistics:\n"
         stats_text += f"Disrupted Links: {len(disrupted_links)}\n"
-        stats_text += f"Progress: {current_idx + 1}/{len(current_path)} hops"
+     #   stats_text += f"Progress: {current_idx + 1}/{len(current_path)} hops"
         
         plt.figtext(0.02, 0.98, stats_text, fontsize=10,
                    bbox=dict(facecolor='white', alpha=0.8),
@@ -103,8 +103,8 @@ class DTNVisualizer(VisualizerBase):
         routing_text += f"Available Paths: {bundle_info.get('available_paths', 0)}\n"
         routing_text += f"Current Path: {current_path}\n"
         
-        plt.figtext(0.02, 0.15, routing_text, fontsize=10,
-                    bbox=dict(facecolor='white', alpha=0.8))
+     #   plt.figtext(0.02, 0.15, routing_text, fontsize=10,
+     #               bbox=dict(facecolor='white', alpha=0.8))
         
         plt.title("DTN Bundle Transmission Simulation")
         plt.axis('off')

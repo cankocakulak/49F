@@ -17,7 +17,7 @@ def main():
     # Try different paths
     paths_to_test = [
         ("mars_rover_1", "earth_station_1"),  # Default path
-    #    ("mars_rover_2", "earth_station_2"),  # Alternative path
+      #  ("mars_rover_2", "earth_station_2"),  # Alternative path
      #   ("mars_rover_1", "mars_base"),        # Short path
       #  ("mars_orbiter_1", "earth_station_1") # Partial path
     ]
