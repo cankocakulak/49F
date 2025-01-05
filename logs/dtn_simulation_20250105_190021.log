@@ -1,0 +1,19 @@
+2025-01-05 19:00:21,807 - INFO - Network Event - LinkDisrupted: Link disrupted: mars_rover_1 -> mars_base
+2025-01-05 19:00:21,811 - INFO - Network Event - NewPath: Found new path from mars_rover_1: ['mars_rover_1', 'mars_rover_2', 'mars_base', 'mars_orbiter_1', 'deep_space_relay_1', 'earth_relay_1', 'earth_station_1']
+2025-01-05 19:00:24,574 - INFO - Network Event - LinkDisrupted: Link disrupted: mars_base -> mars_orbiter_1
+2025-01-05 19:00:24,575 - INFO - Network Event - NewPath: Found new path from mars_base: ['mars_base', 'mars_orbiter_2', 'deep_space_relay_2', 'earth_relay_2', 'earth_station_2', 'earth_station_1']
+2025-01-05 19:00:25,130 - INFO - Network Event - LinkDisrupted: Link disrupted: mars_base -> mars_orbiter_2
+2025-01-05 19:00:25,131 - INFO - Network Event - RetryingLinks: No alternative paths available, attempting to retry disrupted links...
+2025-01-05 19:00:25,131 - INFO - Network Event - RetryAttempt: Retry attempt 1/3
+2025-01-05 19:00:26,132 - INFO - Network Event - LinkRecovered: Link recovered: mars_base -> mars_orbiter_2
+2025-01-05 19:00:26,136 - INFO - Network Event - NewPathAfterRecovery: Found new path after recovery: ['mars_base', 'mars_orbiter_1', 'deep_space_relay_1', 'earth_relay_1', 'earth_station_1']
+2025-01-05 19:00:26,715 - INFO - Network Event - LinkDisrupted: Link disrupted: mars_base -> mars_orbiter_1
+2025-01-05 19:00:26,720 - INFO - Network Event - NewPath: Found new path from mars_base: ['mars_base', 'mars_orbiter_2', 'deep_space_relay_2', 'earth_relay_2', 'earth_station_2', 'earth_station_1']
+2025-01-05 19:00:29,511 - INFO - Network Event - LinkDisrupted: Link disrupted: deep_space_relay_2 -> earth_relay_2
+2025-01-05 19:00:29,513 - INFO - Network Event - RetryingLinks: No alternative paths available, attempting to retry disrupted links...
+2025-01-05 19:00:29,513 - INFO - Network Event - RetryAttempt: Retry attempt 1/3
+2025-01-05 19:00:30,515 - INFO - Network Event - LinkRecovered: Link recovered: deep_space_relay_2 -> earth_relay_2
+2025-01-05 19:00:30,517 - INFO - Network Event - NewPathAfterRecovery: Found new path after recovery: ['deep_space_relay_2', 'earth_relay_2', 'earth_station_2', 'earth_station_1']
+2025-01-05 19:00:32,182 - INFO - Network Event - LinkDisrupted: Link disrupted: earth_relay_2 -> earth_station_2
+2025-01-05 19:00:32,184 - INFO - Network Event - NewPath: Found new path from earth_relay_2: ['earth_relay_2', 'earth_relay_1', 'earth_station_1']
+2025-01-05 19:00:34,956 - INFO - Network Event - SimulationComplete: Simulation completed: Delivered

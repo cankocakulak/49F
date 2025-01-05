@@ -1,0 +1,24 @@
+2025-01-05 18:58:25,167 - INFO - Network Event - LinkDisrupted: Link disrupted: mars_rover_1 -> mars_base
+2025-01-05 18:58:25,170 - INFO - Network Event - NewPath: Found new path from mars_rover_1: ['mars_rover_1', 'mars_rover_2', 'mars_base', 'mars_orbiter_1', 'deep_space_relay_1', 'earth_relay_1', 'earth_station_1']
+2025-01-05 18:58:25,746 - INFO - Network Event - LinkDisrupted: Link disrupted: mars_rover_1 -> mars_rover_2
+2025-01-05 18:58:25,750 - INFO - Network Event - RetryingLinks: No alternative paths available, attempting to retry disrupted links...
+2025-01-05 18:58:25,750 - INFO - Network Event - RetryAttempt: Retry attempt 1/3
+2025-01-05 18:58:26,751 - INFO - Network Event - RetryAttempt: Retry attempt 2/3
+2025-01-05 18:58:27,753 - INFO - Network Event - LinkRecovered: Link recovered: mars_rover_1 -> mars_rover_2
+2025-01-05 18:58:27,759 - INFO - Network Event - NewPathAfterRecovery: Found new path after recovery: ['mars_rover_1', 'mars_base', 'mars_orbiter_1', 'deep_space_relay_1', 'earth_relay_1', 'earth_station_1']
+2025-01-05 18:58:29,422 - INFO - Network Event - LinkDisrupted: Link disrupted: mars_base -> mars_orbiter_1
+2025-01-05 18:58:29,426 - INFO - Network Event - NewPath: Found new path from mars_base: ['mars_base', 'mars_orbiter_2', 'deep_space_relay_2', 'earth_relay_2', 'earth_station_2', 'earth_station_1']
+2025-01-05 18:58:30,007 - INFO - Network Event - LinkDisrupted: Link disrupted: mars_base -> mars_orbiter_2
+2025-01-05 18:58:30,011 - INFO - Network Event - RetryingLinks: No alternative paths available, attempting to retry disrupted links...
+2025-01-05 18:58:30,011 - INFO - Network Event - RetryAttempt: Retry attempt 1/3
+2025-01-05 18:58:31,012 - INFO - Network Event - LinkRecovered: Link recovered: mars_base -> mars_orbiter_2
+2025-01-05 18:58:31,015 - INFO - Network Event - NewPathAfterRecovery: Found new path after recovery: ['mars_base', 'mars_orbiter_1', 'deep_space_relay_1', 'earth_relay_1', 'earth_station_1']
+2025-01-05 18:58:31,596 - INFO - Network Event - LinkDisrupted: Link disrupted: mars_base -> mars_orbiter_1
+2025-01-05 18:58:31,599 - INFO - Network Event - NewPath: Found new path from mars_base: ['mars_base', 'mars_orbiter_2', 'deep_space_relay_2', 'earth_relay_2', 'earth_station_2', 'earth_station_1']
+2025-01-05 18:58:34,311 - INFO - Network Event - LinkDisrupted: Link disrupted: deep_space_relay_2 -> earth_relay_2
+2025-01-05 18:58:34,313 - INFO - Network Event - RetryingLinks: No alternative paths available, attempting to retry disrupted links...
+2025-01-05 18:58:34,313 - INFO - Network Event - RetryAttempt: Retry attempt 1/3
+2025-01-05 18:58:35,314 - INFO - Network Event - RetryAttempt: Retry attempt 2/3
+2025-01-05 18:58:36,316 - INFO - Network Event - RetryAttempt: Retry attempt 3/3
+2025-01-05 18:58:37,318 - INFO - Network Event - RecoveryFailed: Failed to recover after 3 attempts
+2025-01-05 18:58:37,318 - INFO - Network Event - SimulationComplete: Simulation completed: Failed
