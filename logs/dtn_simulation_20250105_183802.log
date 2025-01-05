@@ -1,0 +1,22 @@
+2025-01-05 18:38:02,202 - INFO - Network Event - SimulationStarted: {'bundle_id': 'bundle_183802', 'source': 'mars_rover_1', 'destination': 'earth_station_1', 'initial_paths': 3}
+2025-01-05 18:38:02,202 - INFO - Network Event - AttemptingPath: {'attempt': 1, 'path': ['mars_rover_1', 'mars_base', 'mars_orbiter_1', 'deep_space_relay_1', 'earth_relay_1', 'earth_station_1'], 'current_node': 'mars_rover_1'}
+2025-01-05 18:38:02,763 - INFO - Bundle bundle_183802 - Transmission at mars_rover_1 -> mars_base (Success)
+Details: {'delay': 60, 'total_delay': 0}
+2025-01-05 18:38:03,264 - INFO - Network Event - AttemptingPath: {'attempt': 2, 'path': ['mars_rover_1', 'mars_base', 'mars_orbiter_1', 'deep_space_relay_1', 'earth_relay_1', 'earth_station_1'], 'current_node': 'mars_base'}
+2025-01-05 18:38:03,848 - INFO - Bundle bundle_183802 - Transmission at mars_base -> mars_orbiter_1 (Success)
+Details: {'delay': 180, 'total_delay': 60}
+2025-01-05 18:38:04,350 - INFO - Network Event - AttemptingPath: {'attempt': 3, 'path': ['mars_rover_1', 'mars_base', 'mars_orbiter_1', 'deep_space_relay_1', 'earth_relay_1', 'earth_station_1'], 'current_node': 'mars_orbiter_1'}
+2025-01-05 18:38:04,928 - INFO - Bundle bundle_183802 - LinkDisruption at mars_orbiter_1 -> deep_space_relay_1 (Failed)
+Details: {'reason': 'error', 'remaining_paths': 3}
+2025-01-05 18:38:04,931 - INFO - Network Event - ReroutingAttempt: {'from_node': 'mars_orbiter_1', 'new_path': ['mars_orbiter_1', 'deep_space_relay_1', 'earth_relay_1', 'earth_station_1'], 'available_paths': 3}
+2025-01-05 18:38:04,931 - INFO - Network Event - AttemptingPath: {'attempt': 4, 'path': ['mars_orbiter_1', 'deep_space_relay_1', 'earth_relay_1', 'earth_station_1'], 'current_node': 'mars_orbiter_1'}
+2025-01-05 18:38:05,514 - INFO - Bundle bundle_183802 - Transmission at mars_orbiter_1 -> deep_space_relay_1 (Success)
+Details: {'delay': 600, 'total_delay': 240}
+2025-01-05 18:38:06,015 - INFO - Network Event - AttemptingPath: {'attempt': 5, 'path': ['mars_orbiter_1', 'deep_space_relay_1', 'earth_relay_1', 'earth_station_1'], 'current_node': 'deep_space_relay_1'}
+2025-01-05 18:38:06,604 - INFO - Bundle bundle_183802 - Transmission at deep_space_relay_1 -> earth_relay_1 (Success)
+Details: {'delay': 600, 'total_delay': 840}
+2025-01-05 18:38:07,106 - INFO - Network Event - AttemptingPath: {'attempt': 6, 'path': ['mars_orbiter_1', 'deep_space_relay_1', 'earth_relay_1', 'earth_station_1'], 'current_node': 'earth_relay_1'}
+2025-01-05 18:38:07,689 - INFO - Bundle bundle_183802 - Transmission at earth_relay_1 -> earth_station_1 (Success)
+Details: {'delay': 180, 'total_delay': 1440}
+2025-01-05 18:38:08,191 - INFO - Network Event - AttemptingPath: {'attempt': 7, 'path': ['mars_orbiter_1', 'deep_space_relay_1', 'earth_relay_1', 'earth_station_1'], 'current_node': 'earth_station_1'}
+2025-01-05 18:38:08,742 - INFO - Network Event - SimulationComplete: {'status': 'Delivered', 'total_delay': 1620, 'retransmissions': 0, 'paths_attempted': 7, 'disruptions': 0, 'stored_bundles': 1}

@@ -136,6 +136,7 @@ class SimpleNetworkSimulator(NetworkSimulatorBase):
             
             if is_error or is_disrupted:
                 print(f"Link disrupted: {current_node} -> {next_node}")
+                self.logger.log_network_event("LinkDisrupted", f"Link disrupted: {current_node} -> {next_node}")
                 disrupted_links.add((current_node, next_node))
                 path_history[-1]["status"] = f"Failed at {current_node}->{next_node}"
                 
@@ -156,6 +157,7 @@ class SimpleNetworkSimulator(NetworkSimulatorBase):
                 
                 if path_options:
                     print(f"Found new path from {current_node}: {path_options[0][0]}")
+                    self.logger.log_network_event("NewPath", f"Found new path from {current_node}: {path_options[0][0]}")
                     current_path = path_options[0][0]
                     path_history.append({
                         "attempt": paths_attempted + 1,
@@ -165,16 +167,19 @@ class SimpleNetworkSimulator(NetworkSimulatorBase):
                     continue
                 else:
                     print("No alternative paths available, attempting to retry disrupted links...")
+                    self.logger.log_network_event("RetryingLinks", "No alternative paths available, attempting to retry disrupted links...")
                     # Try to recover disrupted links
                     retry_count = 0
                     while retry_count < max_retries_per_link:
                         print(f"Retry attempt {retry_count + 1}/{max_retries_per_link}")
+                        self.logger.log_network_event("RetryAttempt", f"Retry attempt {retry_count + 1}/{max_retries_per_link}")
                         time.sleep(1)  # Wait before retry
                         
                         # Check if link recovers
                         if random.random() > (self.config.get_simulation_params()["network"]["error_rate"] + 
                                             self.config.get_simulation_params()["network"]["disruption_rate"]) / 2:
                             print(f"Link recovered: {current_node} -> {next_node}")
+                            self.logger.log_network_event("LinkRecovered", f"Link recovered: {current_node} -> {next_node}")
                             disrupted_links.remove((current_node, next_node))
                             retransmissions += 1
                             
@@ -183,6 +188,7 @@ class SimpleNetworkSimulator(NetworkSimulatorBase):
                             if path_options:
                                 current_path = path_options[0][0]
                                 print(f"Found new path after recovery: {current_path}")
+                                self.logger.log_network_event("NewPathAfterRecovery", f"Found new path after recovery: {current_path}")
                                 path_history.append({
                                     "attempt": paths_attempted + 1,
                                     "path": current_path,
@@ -195,6 +201,7 @@ class SimpleNetworkSimulator(NetworkSimulatorBase):
                     
                     if retry_count == max_retries_per_link:
                         print(f"Failed to recover after {max_retries_per_link} attempts")
+                        self.logger.log_network_event("RecoveryFailed", f"Failed to recover after {max_retries_per_link} attempts")
                         path_history[-1]["status"] = "Failed - Max retries reached"
                         break
                     continue
@@ -212,6 +219,7 @@ class SimpleNetworkSimulator(NetworkSimulatorBase):
         
         final_status = "Delivered" if successful_delivery else "Failed"
         print(f"Simulation completed: {final_status}")
+        self.logger.log_network_event("SimulationComplete", f"Simulation completed: {final_status}")
         
         # Calculate max stored bundles
         max_stored_bundles = max([len(bundles) for bundles in self.buffer.values()]) if self.buffer else 0

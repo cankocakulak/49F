@@ -1,0 +1,30 @@
+2025-01-05 18:39:06,595 - INFO - Network Event - SimulationStarted: {'bundle_id': 'bundle_183906', 'source': 'mars_rover_1', 'destination': 'earth_station_1', 'initial_paths': 3}
+2025-01-05 18:39:06,595 - INFO - Network Event - AttemptingPath: {'attempt': 1, 'path': ['mars_rover_1', 'mars_base', 'mars_orbiter_1', 'deep_space_relay_1', 'earth_relay_1', 'earth_station_1'], 'current_node': 'mars_rover_1'}
+2025-01-05 18:39:07,153 - INFO - Bundle bundle_183906 - LinkDisruption at mars_rover_1 -> mars_base (Failed)
+Details: {'reason': 'error', 'remaining_paths': 3}
+2025-01-05 18:39:07,157 - INFO - Network Event - ReroutingAttempt: {'from_node': 'mars_rover_1', 'new_path': ['mars_rover_1', 'mars_base', 'mars_orbiter_1', 'deep_space_relay_1', 'earth_relay_1', 'earth_station_1'], 'available_paths': 3}
+2025-01-05 18:39:07,157 - INFO - Network Event - AttemptingPath: {'attempt': 2, 'path': ['mars_rover_1', 'mars_base', 'mars_orbiter_1', 'deep_space_relay_1', 'earth_relay_1', 'earth_station_1'], 'current_node': 'mars_rover_1'}
+2025-01-05 18:39:07,760 - INFO - Bundle bundle_183906 - LinkDisruption at mars_rover_1 -> mars_base (Failed)
+Details: {'reason': 'disruption', 'remaining_paths': 3}
+2025-01-05 18:39:07,765 - INFO - Network Event - ReroutingAttempt: {'from_node': 'mars_rover_1', 'new_path': ['mars_rover_1', 'mars_base', 'mars_orbiter_1', 'deep_space_relay_1', 'earth_relay_1', 'earth_station_1'], 'available_paths': 3}
+2025-01-05 18:39:07,766 - INFO - Network Event - AttemptingPath: {'attempt': 3, 'path': ['mars_rover_1', 'mars_base', 'mars_orbiter_1', 'deep_space_relay_1', 'earth_relay_1', 'earth_station_1'], 'current_node': 'mars_rover_1'}
+2025-01-05 18:39:08,346 - INFO - Bundle bundle_183906 - Transmission at mars_rover_1 -> mars_base (Success)
+Details: {'delay': 60, 'total_delay': 0}
+2025-01-05 18:39:08,848 - INFO - Network Event - AttemptingPath: {'attempt': 4, 'path': ['mars_rover_1', 'mars_base', 'mars_orbiter_1', 'deep_space_relay_1', 'earth_relay_1', 'earth_station_1'], 'current_node': 'mars_base'}
+2025-01-05 18:39:09,432 - INFO - Bundle bundle_183906 - Transmission at mars_base -> mars_orbiter_1 (Success)
+Details: {'delay': 180, 'total_delay': 60}
+2025-01-05 18:39:09,934 - INFO - Network Event - AttemptingPath: {'attempt': 5, 'path': ['mars_rover_1', 'mars_base', 'mars_orbiter_1', 'deep_space_relay_1', 'earth_relay_1', 'earth_station_1'], 'current_node': 'mars_orbiter_1'}
+2025-01-05 18:39:10,519 - INFO - Bundle bundle_183906 - Transmission at mars_orbiter_1 -> deep_space_relay_1 (Success)
+Details: {'delay': 600, 'total_delay': 240}
+2025-01-05 18:39:11,020 - INFO - Network Event - AttemptingPath: {'attempt': 6, 'path': ['mars_rover_1', 'mars_base', 'mars_orbiter_1', 'deep_space_relay_1', 'earth_relay_1', 'earth_station_1'], 'current_node': 'deep_space_relay_1'}
+2025-01-05 18:39:11,600 - INFO - Bundle bundle_183906 - Transmission at deep_space_relay_1 -> earth_relay_1 (Success)
+Details: {'delay': 600, 'total_delay': 840}
+2025-01-05 18:39:12,101 - INFO - Network Event - AttemptingPath: {'attempt': 7, 'path': ['mars_rover_1', 'mars_base', 'mars_orbiter_1', 'deep_space_relay_1', 'earth_relay_1', 'earth_station_1'], 'current_node': 'earth_relay_1'}
+2025-01-05 18:39:12,685 - INFO - Bundle bundle_183906 - LinkDisruption at earth_relay_1 -> earth_station_1 (Failed)
+Details: {'reason': 'disruption', 'remaining_paths': 3}
+2025-01-05 18:39:12,688 - INFO - Network Event - ReroutingAttempt: {'from_node': 'earth_relay_1', 'new_path': ['earth_relay_1', 'earth_station_1'], 'available_paths': 3}
+2025-01-05 18:39:12,688 - INFO - Network Event - AttemptingPath: {'attempt': 8, 'path': ['earth_relay_1', 'earth_station_1'], 'current_node': 'earth_relay_1'}
+2025-01-05 18:39:13,269 - INFO - Bundle bundle_183906 - Transmission at earth_relay_1 -> earth_station_1 (Success)
+Details: {'delay': 180, 'total_delay': 1440}
+2025-01-05 18:39:13,771 - INFO - Network Event - AttemptingPath: {'attempt': 9, 'path': ['earth_relay_1', 'earth_station_1'], 'current_node': 'earth_station_1'}
+2025-01-05 18:39:14,339 - INFO - Network Event - SimulationComplete: {'status': 'Delivered', 'total_delay': 1620, 'retransmissions': 0, 'paths_attempted': 9, 'disruptions': 0, 'stored_bundles': 3}
