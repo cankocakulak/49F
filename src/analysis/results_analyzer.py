@@ -28,7 +28,7 @@ class DTNResultsAnalyzer:
             
         # Create simulation-specific directory
         sim_dir = self.results_dir / simulation_id
-        sim_dir.mkdir(exist_ok=True)
+        sim_dir.mkdir(parents=True, exist_ok=True)
         
         # Save raw statistics
         with open(sim_dir / "stats.json", "w") as f:
@@ -37,9 +37,9 @@ class DTNResultsAnalyzer:
         # Generate visualizations
         self._create_performance_summary(stats, sim_dir)
         self._create_detailed_analysis(stats, sim_dir)
-        
-        # Generate comparison with theoretical TCP/IP
         self._create_dtn_tcp_comparison(stats, sim_dir)
+        
+        print(f"Analysis results saved to: {sim_dir}")
         
     def _create_performance_summary(self, stats, sim_dir):
         """Create main performance metrics visualization."""

@@ -2,8 +2,9 @@ import networkx as nx
 import matplotlib.pyplot as plt
 from typing import Dict, List, Set
 import time
+from src.base import VisualizerBase
 
-class DTNVisualizer:
+class DTNVisualizer(VisualizerBase):
     def __init__(self, config):
         self.G = nx.Graph()
         self.pos = None
@@ -86,6 +87,25 @@ class DTNVisualizer:
                    bbox=dict(facecolor='white', alpha=0.8),
                    verticalalignment='top')
         
+        # Draw alternative paths in different colors
+        if 'alternative_paths' in bundle_info:
+            colors = ['lightblue', 'lightgreen', 'lightyellow']
+            for i, path in enumerate(bundle_info['alternative_paths'][:3]):
+                path_edges = list(zip(path[:-1], path[1:]))
+                nx.draw_networkx_edges(self.G, self.pos,
+                                     edgelist=path_edges,
+                                     edge_color=colors[i],
+                                     style='dotted',
+                                     alpha=0.3)
+        
+        # Add routing information to status text
+        routing_text = f"\nRouting Info:\n"
+        routing_text += f"Available Paths: {bundle_info.get('available_paths', 0)}\n"
+        routing_text += f"Current Path: {current_path}\n"
+        
+        plt.figtext(0.02, 0.15, routing_text, fontsize=10,
+                    bbox=dict(facecolor='white', alpha=0.8))
+        
         plt.title("DTN Bundle Transmission Simulation")
         plt.axis('off')
         plt.tight_layout()
@@ -112,3 +132,4 @@ class DTNVisualizer:
         plt.tight_layout()
         plt.show(block=False)
         plt.pause(3)  # Show initial topology for 3 seconds
+

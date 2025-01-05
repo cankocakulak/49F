@@ -1,15 +1,17 @@
-import json
-from datetime import datetime, timedelta
+from datetime import datetime
 import time
+import json
 from src.dtn_core import DTNNode, Bundle
 from src.visualization import DTNVisualizer
+from src.base import NetworkSimulatorBase
 import numpy as np
 from src.utils.config import ConfigLoader
 import random
 from src.utils.logger import DTNLogger
 import networkx as nx
+from src.routing_algorithms import DTNRoutingAlgorithm
 
-class SimpleNetworkSimulator:
+class SimpleNetworkSimulator(NetworkSimulatorBase):
     def __init__(self):
         self.nodes = {}
         self.config = ConfigLoader()
@@ -18,6 +20,7 @@ class SimpleNetworkSimulator:
         self.topology = self.load_topology()
         self.buffer = {}
         self.network_graph = self._build_network_graph()
+        self.router = DTNRoutingAlgorithm(self._build_network_graph())
         
     def _build_network_graph(self):
         """Build a NetworkX graph from topology for path finding."""
@@ -74,24 +77,32 @@ class SimpleNetworkSimulator:
             creation_timestamp=datetime.now()
         )
         
-        # Find all possible paths
-        all_paths = list(nx.all_simple_paths(self.network_graph, source, destination))
-        paths_with_delays = []
-        for path in all_paths:
-            total_path_delay = sum(self.network_graph[path[i]][path[i+1]]["delay"] 
-                                 for i in range(len(path)-1))
-            paths_with_delays.append((path, total_path_delay))
+        # Initialize simulation state
+        disrupted_links = set()  # Initialize this at the start
+        total_delay = 0
+        retransmissions = 0
+        successful_delivery = False
+        stored_bundles_count = 0
         
-        paths_with_delays.sort(key=lambda x: x[1])
+        # Get initial path options from router
+        path_options = self.router.get_alternative_paths(source, destination)
         
-        self.logger.log_network_event("PathsFound", {
-            "num_paths": len(all_paths),
-            "paths": all_paths,
-            "delays": {str(p): d for p, d in paths_with_delays}
-        })
+        # Update visualization to show available paths
+        self.visualizer.update_simulation_state(
+            current_path=path_options[0][0] if path_options else [],
+            current_node=source,
+            disrupted_links=disrupted_links,
+            bundle_info={
+                "id": bundle_id,
+                "total_delay": 0,
+                "retransmissions": 0,
+                "status": "Planning Route",
+                "available_paths": len(path_options),
+                "alternative_paths": [path for path, _ in path_options[1:]] if len(path_options) > 1 else []
+            }
+        )
         
         # Simulation state
-        disrupted_links = set()
         total_delay = 0
         retransmissions = 0
         successful_delivery = False
@@ -99,10 +110,9 @@ class SimpleNetworkSimulator:
         stored_bundles = {node: [] for node in self.network_graph.nodes()}
         recovery_times = []
         disruptions_handled = 0
-        stored_bundles_count = 0
         
         while not successful_delivery:
-            for current_path, estimated_delay in paths_with_delays:
+            for current_path, estimated_delay in path_options:
                 if successful_delivery:
                     break
                     
@@ -250,7 +260,7 @@ class SimpleNetworkSimulator:
                             "retransmissions": retransmissions,
                             "status": "In Transit",
                             "stored_bundles": {k: len(v) for k, v in stored_bundles.items()},
-                            "current_path_index": f"Path {paths_with_delays.index((current_path, estimated_delay)) + 1}/{len(paths_with_delays)}"
+                            "current_path_index": f"Path {path_options.index((current_path, estimated_delay)) + 1}/{len(path_options)}"
                         }
                     )
                     
@@ -272,12 +282,16 @@ class SimpleNetworkSimulator:
             "avg_recovery_time": sum(recovery_times) / len(recovery_times) if recovery_times else 0,
             "stored_bundles": stored_bundles_count,
             "max_stored_bundles": max([len(bundles) for bundles in self.buffer.values()]) if self.buffer else 0,
-            "paths_attempted": paths_with_delays.index((current_path, estimated_delay)) + 1,
-            "total_available_paths": len(paths_with_delays),
+            "paths_attempted": path_options.index((current_path, estimated_delay)) + 1 if path_options else 0,
+            "total_available_paths": len(path_options),
             "buffer_states": {node: len(bundles) for node, bundles in self.buffer.items()},
             "total_storage_events": stored_bundles_count,
             "recovery_attempts": retransmissions,
-            "successful_recoveries": len(recovery_times)
+            "successful_recoveries": len(recovery_times),
+            "simulation_timestamp": datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
+            "source": source,
+            "destination": destination,
+            "message": message
         }
         
         self.logger.log_network_event("SimulationComplete", final_stats)

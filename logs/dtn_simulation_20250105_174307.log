@@ -1,0 +1,132 @@
+2025-01-05 17:43:08,284 - INFO - Network Event - AttemptingPath: {'path': ['mars_rover_1', 'mars_base', 'mars_orbiter_1', 'deep_space_relay_1', 'earth_relay_1', 'earth_station_1'], 'bundle': 'bundle_174307', 'estimated_delay': 1620}
+2025-01-05 17:43:08,285 - INFO - Network Event - DisruptionCheck: {'current_node': 'mars_rover_1', 'next_node': 'mars_base', 'error_rate': 0.3, 'disruption_rate': 0.3}
+2025-01-05 17:43:08,285 - INFO - Bundle bundle_174307 - Disruption at mars_rover_1 -> mars_base (Failed)
+Details: {'delay': 60, 'distance': '100 km'}
+2025-01-05 17:43:08,285 - INFO - Network Event - DisruptionCheck: {'current_node': 'mars_rover_1', 'next_node': 'mars_base', 'error_rate': 0.3, 'disruption_rate': 0.3}
+2025-01-05 17:43:08,285 - INFO - Bundle bundle_174307 - Transmission at mars_rover_1 -> mars_base (Success)
+Details: {'delay': 60, 'total_delay': 60, 'distance': '100 km', 'retransmissions': 0}
+2025-01-05 17:43:09,883 - INFO - Network Event - DisruptionCheck: {'current_node': 'mars_base', 'next_node': 'mars_orbiter_1', 'error_rate': 0.3, 'disruption_rate': 0.3}
+2025-01-05 17:43:09,884 - INFO - Bundle bundle_174307 - BundleStored at mars_base
+Details: {'reason': 'error', 'buffer_size': 1}
+2025-01-05 17:43:09,884 - INFO - Bundle bundle_174307 - RecoveryAttempt at mars_base -> mars_orbiter_1 (Attempt 1/3)
+2025-01-05 17:43:10,885 - INFO - Bundle bundle_174307 - RecoveryAttempt at mars_base -> mars_orbiter_1 (Attempt 2/3)
+2025-01-05 17:43:11,887 - INFO - Bundle bundle_174307 - RecoverySuccess at mars_base -> mars_orbiter_1 (Recovered after 2 attempts)
+2025-01-05 17:43:11,888 - INFO - Bundle bundle_174307 - Transmission at mars_base -> mars_orbiter_1 (Success)
+Details: {'delay': 180, 'total_delay': 240, 'distance': '400 km', 'retransmissions': 1}
+2025-01-05 17:43:13,471 - INFO - Network Event - DisruptionCheck: {'current_node': 'mars_orbiter_1', 'next_node': 'deep_space_relay_1', 'error_rate': 0.3, 'disruption_rate': 0.3}
+2025-01-05 17:43:13,472 - INFO - Bundle bundle_174307 - BundleStored at mars_orbiter_1
+Details: {'reason': 'error', 'buffer_size': 1}
+2025-01-05 17:43:13,472 - INFO - Bundle bundle_174307 - RecoveryAttempt at mars_orbiter_1 -> deep_space_relay_1 (Attempt 1/3)
+2025-01-05 17:43:14,474 - INFO - Bundle bundle_174307 - RecoveryAttempt at mars_orbiter_1 -> deep_space_relay_1 (Attempt 2/3)
+2025-01-05 17:43:15,475 - INFO - Bundle bundle_174307 - RecoverySuccess at mars_orbiter_1 -> deep_space_relay_1 (Recovered after 2 attempts)
+2025-01-05 17:43:15,476 - INFO - Bundle bundle_174307 - Transmission at mars_orbiter_1 -> deep_space_relay_1 (Success)
+Details: {'delay': 600, 'total_delay': 840, 'distance': '200M km', 'retransmissions': 2}
+2025-01-05 17:43:17,058 - INFO - Network Event - DisruptionCheck: {'current_node': 'deep_space_relay_1', 'next_node': 'earth_relay_1', 'error_rate': 0.3, 'disruption_rate': 0.3}
+2025-01-05 17:43:17,060 - INFO - Bundle bundle_174307 - BundleStored at deep_space_relay_1
+Details: {'reason': 'disruption', 'buffer_size': 1}
+2025-01-05 17:43:17,060 - INFO - Bundle bundle_174307 - RecoveryAttempt at deep_space_relay_1 -> earth_relay_1 (Attempt 1/3)
+2025-01-05 17:43:18,061 - INFO - Bundle bundle_174307 - RecoverySuccess at deep_space_relay_1 -> earth_relay_1 (Recovered after 1 attempts)
+2025-01-05 17:43:18,062 - INFO - Bundle bundle_174307 - Transmission at deep_space_relay_1 -> earth_relay_1 (Success)
+Details: {'delay': 600, 'total_delay': 1440, 'distance': '50M km', 'retransmissions': 2}
+2025-01-05 17:43:19,639 - INFO - Network Event - DisruptionCheck: {'current_node': 'earth_relay_1', 'next_node': 'earth_station_1', 'error_rate': 0.3, 'disruption_rate': 0.3}
+2025-01-05 17:43:19,640 - INFO - Bundle bundle_174307 - BundleStored at earth_relay_1
+Details: {'reason': 'disruption', 'buffer_size': 1}
+2025-01-05 17:43:19,640 - INFO - Bundle bundle_174307 - RecoveryAttempt at earth_relay_1 -> earth_station_1 (Attempt 1/3)
+2025-01-05 17:43:20,642 - INFO - Bundle bundle_174307 - RecoverySuccess at earth_relay_1 -> earth_station_1 (Recovered after 1 attempts)
+2025-01-05 17:43:20,642 - INFO - Bundle bundle_174307 - Transmission at earth_relay_1 -> earth_station_1 (Success)
+Details: {'delay': 180, 'total_delay': 1620, 'distance': '400 km', 'retransmissions': 2}
+2025-01-05 17:43:22,222 - INFO - Network Event - SimulationComplete: {'bundle_id': 'bundle_174307', 'total_delay': 1620, 'total_retransmissions': 2, 'final_path': ['mars_rover_1', 'mars_rover_2', 'mars_base', 'mars_orbiter_1', 'deep_space_relay_1', 'earth_relay_1', 'earth_station_1'], 'disruptions': 4, 'disrupted_links': [('mars_rover_1', 'mars_base')], 'avg_recovery_time': 1.5021333694458008, 'stored_bundles': 4, 'max_stored_bundles': 0, 'paths_attempted': 2, 'total_available_paths': 3, 'buffer_states': {'mars_base': 0, 'mars_orbiter_1': 0, 'deep_space_relay_1': 0, 'earth_relay_1': 0}, 'total_storage_events': 4, 'recovery_attempts': 2, 'successful_recoveries': 4, 'simulation_timestamp': '2025-01-05 17:43:22', 'source': 'mars_rover_1', 'destination': 'earth_station_1', 'message': 'Hello from mars_rover_1!'}
+2025-01-05 17:43:23,352 - INFO - Network Event - AttemptingPath: {'path': ['mars_rover_2', 'mars_base', 'mars_orbiter_2', 'deep_space_relay_2', 'earth_relay_2', 'earth_station_2'], 'bundle': 'bundle_174322', 'estimated_delay': 1605}
+2025-01-05 17:43:23,353 - INFO - Network Event - DisruptionCheck: {'current_node': 'mars_rover_2', 'next_node': 'mars_base', 'error_rate': 0.3, 'disruption_rate': 0.3}
+2025-01-05 17:43:23,353 - INFO - Bundle bundle_174322 - BundleStored at mars_rover_2
+Details: {'reason': 'disruption', 'buffer_size': 1}
+2025-01-05 17:43:23,353 - INFO - Bundle bundle_174322 - RecoveryAttempt at mars_rover_2 -> mars_base (Attempt 1/3)
+2025-01-05 17:43:24,354 - INFO - Bundle bundle_174322 - RecoverySuccess at mars_rover_2 -> mars_base (Recovered after 1 attempts)
+2025-01-05 17:43:24,355 - INFO - Bundle bundle_174322 - Transmission at mars_rover_2 -> mars_base (Success)
+Details: {'delay': 45, 'total_delay': 45, 'distance': '80 km', 'retransmissions': 0}
+2025-01-05 17:43:25,929 - INFO - Network Event - DisruptionCheck: {'current_node': 'mars_base', 'next_node': 'mars_orbiter_2', 'error_rate': 0.3, 'disruption_rate': 0.3}
+2025-01-05 17:43:25,930 - INFO - Bundle bundle_174322 - BundleStored at mars_base
+Details: {'reason': 'disruption', 'buffer_size': 1}
+2025-01-05 17:43:25,930 - INFO - Bundle bundle_174322 - RecoveryAttempt at mars_base -> mars_orbiter_2 (Attempt 1/3)
+2025-01-05 17:43:26,931 - INFO - Bundle bundle_174322 - RecoverySuccess at mars_base -> mars_orbiter_2 (Recovered after 1 attempts)
+2025-01-05 17:43:26,931 - INFO - Bundle bundle_174322 - Disruption at mars_base -> mars_orbiter_2 (Failed)
+Details: {'delay': 180, 'distance': '400 km'}
+2025-01-05 17:43:26,932 - INFO - Network Event - DisruptionCheck: {'current_node': 'mars_base', 'next_node': 'mars_orbiter_2', 'error_rate': 0.3, 'disruption_rate': 0.3}
+2025-01-05 17:43:26,932 - INFO - Bundle bundle_174322 - BundleStored at mars_base
+Details: {'reason': 'disruption', 'buffer_size': 1}
+2025-01-05 17:43:26,932 - INFO - Bundle bundle_174322 - RecoveryAttempt at mars_base -> mars_orbiter_2 (Attempt 1/3)
+2025-01-05 17:43:27,933 - INFO - Bundle bundle_174322 - RecoveryAttempt at mars_base -> mars_orbiter_2 (Attempt 2/3)
+2025-01-05 17:43:28,935 - INFO - Bundle bundle_174322 - RecoverySuccess at mars_base -> mars_orbiter_2 (Recovered after 2 attempts)
+2025-01-05 17:43:28,936 - INFO - Bundle bundle_174322 - Disruption at mars_base -> mars_orbiter_2 (Failed)
+Details: {'delay': 180, 'distance': '400 km'}
+2025-01-05 17:43:28,936 - INFO - Network Event - DisruptionCheck: {'current_node': 'mars_base', 'next_node': 'mars_orbiter_2', 'error_rate': 0.3, 'disruption_rate': 0.3}
+2025-01-05 17:43:28,936 - INFO - Bundle bundle_174322 - Transmission at mars_base -> mars_orbiter_2 (Success)
+Details: {'delay': 180, 'total_delay': 225, 'distance': '400 km', 'retransmissions': 1}
+2025-01-05 17:43:30,514 - INFO - Network Event - DisruptionCheck: {'current_node': 'mars_orbiter_2', 'next_node': 'deep_space_relay_2', 'error_rate': 0.3, 'disruption_rate': 0.3}
+2025-01-05 17:43:30,514 - INFO - Bundle bundle_174322 - Transmission at mars_orbiter_2 -> deep_space_relay_2 (Success)
+Details: {'delay': 600, 'total_delay': 825, 'distance': '200M km', 'retransmissions': 1}
+2025-01-05 17:43:32,098 - INFO - Network Event - DisruptionCheck: {'current_node': 'deep_space_relay_2', 'next_node': 'earth_relay_2', 'error_rate': 0.3, 'disruption_rate': 0.3}
+2025-01-05 17:43:32,098 - INFO - Bundle bundle_174322 - BundleStored at deep_space_relay_2
+Details: {'reason': 'error', 'buffer_size': 1}
+2025-01-05 17:43:32,098 - INFO - Bundle bundle_174322 - RecoveryAttempt at deep_space_relay_2 -> earth_relay_2 (Attempt 1/3)
+2025-01-05 17:43:33,100 - INFO - Bundle bundle_174322 - RecoverySuccess at deep_space_relay_2 -> earth_relay_2 (Recovered after 1 attempts)
+2025-01-05 17:43:33,101 - INFO - Bundle bundle_174322 - Disruption at deep_space_relay_2 -> earth_relay_2 (Failed)
+Details: {'delay': 600, 'distance': '50M km'}
+2025-01-05 17:43:33,101 - INFO - Network Event - DisruptionCheck: {'current_node': 'deep_space_relay_2', 'next_node': 'earth_relay_2', 'error_rate': 0.3, 'disruption_rate': 0.3}
+2025-01-05 17:43:33,101 - INFO - Bundle bundle_174322 - Disruption at deep_space_relay_2 -> earth_relay_2 (Failed)
+Details: {'delay': 600, 'distance': '50M km'}
+2025-01-05 17:43:33,101 - INFO - Network Event - DisruptionCheck: {'current_node': 'deep_space_relay_2', 'next_node': 'earth_relay_2', 'error_rate': 0.3, 'disruption_rate': 0.3}
+2025-01-05 17:43:33,101 - INFO - Bundle bundle_174322 - Transmission at deep_space_relay_2 -> earth_relay_2 (Success)
+Details: {'delay': 600, 'total_delay': 1425, 'distance': '50M km', 'retransmissions': 1}
+2025-01-05 17:43:34,684 - INFO - Network Event - DisruptionCheck: {'current_node': 'earth_relay_2', 'next_node': 'earth_station_2', 'error_rate': 0.3, 'disruption_rate': 0.3}
+2025-01-05 17:43:34,684 - INFO - Bundle bundle_174322 - BundleStored at earth_relay_2
+Details: {'reason': 'error', 'buffer_size': 1}
+2025-01-05 17:43:34,685 - INFO - Bundle bundle_174322 - RecoveryAttempt at earth_relay_2 -> earth_station_2 (Attempt 1/3)
+2025-01-05 17:43:35,686 - INFO - Bundle bundle_174322 - RecoverySuccess at earth_relay_2 -> earth_station_2 (Recovered after 1 attempts)
+2025-01-05 17:43:35,687 - INFO - Bundle bundle_174322 - Disruption at earth_relay_2 -> earth_station_2 (Failed)
+Details: {'delay': 180, 'distance': '400 km'}
+2025-01-05 17:43:35,687 - INFO - Network Event - DisruptionCheck: {'current_node': 'earth_relay_2', 'next_node': 'earth_station_2', 'error_rate': 0.3, 'disruption_rate': 0.3}
+2025-01-05 17:43:35,687 - INFO - Bundle bundle_174322 - Transmission at earth_relay_2 -> earth_station_2 (Success)
+Details: {'delay': 180, 'total_delay': 1605, 'distance': '400 km', 'retransmissions': 1}
+2025-01-05 17:43:37,266 - INFO - Network Event - SimulationComplete: {'bundle_id': 'bundle_174322', 'total_delay': 1605, 'total_retransmissions': 1, 'final_path': ['mars_rover_2', 'mars_rover_1', 'mars_base', 'mars_orbiter_2', 'deep_space_relay_2', 'earth_relay_2', 'earth_station_2'], 'disruptions': 5, 'disrupted_links': [('deep_space_relay_2', 'earth_relay_2'), ('mars_base', 'mars_orbiter_2'), ('earth_relay_2', 'earth_station_2')], 'avg_recovery_time': 1.2014173507690429, 'stored_bundles': 5, 'max_stored_bundles': 0, 'paths_attempted': 2, 'total_available_paths': 3, 'buffer_states': {'mars_base': 0, 'mars_orbiter_1': 0, 'deep_space_relay_1': 0, 'earth_relay_1': 0, 'mars_rover_2': 0, 'deep_space_relay_2': 0, 'earth_relay_2': 0}, 'total_storage_events': 5, 'recovery_attempts': 1, 'successful_recoveries': 5, 'simulation_timestamp': '2025-01-05 17:43:37', 'source': 'mars_rover_2', 'destination': 'earth_station_2', 'message': 'Hello from mars_rover_2!'}
+2025-01-05 17:43:38,362 - INFO - Network Event - AttemptingPath: {'path': ['mars_rover_1', 'mars_base'], 'bundle': 'bundle_174337', 'estimated_delay': 60}
+2025-01-05 17:43:38,363 - INFO - Network Event - DisruptionCheck: {'current_node': 'mars_rover_1', 'next_node': 'mars_base', 'error_rate': 0.3, 'disruption_rate': 0.3}
+2025-01-05 17:43:38,364 - INFO - Bundle bundle_174337 - BundleStored at mars_rover_1
+Details: {'reason': 'error', 'buffer_size': 1}
+2025-01-05 17:43:38,364 - INFO - Bundle bundle_174337 - RecoveryAttempt at mars_rover_1 -> mars_base (Attempt 1/3)
+2025-01-05 17:43:39,365 - INFO - Bundle bundle_174337 - RecoverySuccess at mars_rover_1 -> mars_base (Recovered after 1 attempts)
+2025-01-05 17:43:39,366 - INFO - Bundle bundle_174337 - Transmission at mars_rover_1 -> mars_base (Success)
+Details: {'delay': 60, 'total_delay': 60, 'distance': '100 km', 'retransmissions': 0}
+2025-01-05 17:43:40,947 - INFO - Network Event - SimulationComplete: {'bundle_id': 'bundle_174337', 'total_delay': 60, 'total_retransmissions': 0, 'final_path': ['mars_rover_1', 'mars_rover_2', 'mars_base'], 'disruptions': 1, 'disrupted_links': [], 'avg_recovery_time': 1.001188039779663, 'stored_bundles': 1, 'max_stored_bundles': 0, 'paths_attempted': 2, 'total_available_paths': 2, 'buffer_states': {'mars_base': 0, 'mars_orbiter_1': 0, 'deep_space_relay_1': 0, 'earth_relay_1': 0, 'mars_rover_2': 0, 'deep_space_relay_2': 0, 'earth_relay_2': 0, 'mars_rover_1': 0}, 'total_storage_events': 1, 'recovery_attempts': 0, 'successful_recoveries': 1, 'simulation_timestamp': '2025-01-05 17:43:40', 'source': 'mars_rover_1', 'destination': 'mars_base', 'message': 'Hello from mars_rover_1!'}
+2025-01-05 17:43:41,982 - INFO - Network Event - AttemptingPath: {'path': ['mars_orbiter_1', 'deep_space_relay_1', 'earth_relay_1', 'earth_station_1'], 'bundle': 'bundle_174341', 'estimated_delay': 1380}
+2025-01-05 17:43:41,983 - INFO - Network Event - DisruptionCheck: {'current_node': 'mars_orbiter_1', 'next_node': 'deep_space_relay_1', 'error_rate': 0.3, 'disruption_rate': 0.3}
+2025-01-05 17:43:41,983 - INFO - Bundle bundle_174341 - BundleStored at mars_orbiter_1
+Details: {'reason': 'disruption', 'buffer_size': 1}
+2025-01-05 17:43:41,983 - INFO - Bundle bundle_174341 - RecoveryAttempt at mars_orbiter_1 -> deep_space_relay_1 (Attempt 1/3)
+2025-01-05 17:43:42,985 - INFO - Bundle bundle_174341 - RecoveryAttempt at mars_orbiter_1 -> deep_space_relay_1 (Attempt 2/3)
+2025-01-05 17:43:43,986 - INFO - Bundle bundle_174341 - RecoverySuccess at mars_orbiter_1 -> deep_space_relay_1 (Recovered after 2 attempts)
+2025-01-05 17:43:43,987 - INFO - Bundle bundle_174341 - Transmission at mars_orbiter_1 -> deep_space_relay_1 (Success)
+Details: {'delay': 600, 'total_delay': 600, 'distance': '200M km', 'retransmissions': 1}
+2025-01-05 17:43:45,570 - INFO - Network Event - DisruptionCheck: {'current_node': 'deep_space_relay_1', 'next_node': 'earth_relay_1', 'error_rate': 0.3, 'disruption_rate': 0.3}
+2025-01-05 17:43:45,572 - INFO - Bundle bundle_174341 - BundleStored at deep_space_relay_1
+Details: {'reason': 'disruption', 'buffer_size': 1}
+2025-01-05 17:43:45,572 - INFO - Bundle bundle_174341 - RecoveryAttempt at deep_space_relay_1 -> earth_relay_1 (Attempt 1/3)
+2025-01-05 17:43:46,573 - INFO - Bundle bundle_174341 - RecoveryAttempt at deep_space_relay_1 -> earth_relay_1 (Attempt 2/3)
+2025-01-05 17:43:47,575 - INFO - Bundle bundle_174341 - RecoverySuccess at deep_space_relay_1 -> earth_relay_1 (Recovered after 2 attempts)
+2025-01-05 17:43:47,576 - INFO - Bundle bundle_174341 - Disruption at deep_space_relay_1 -> earth_relay_1 (Failed)
+Details: {'delay': 600, 'distance': '50M km'}
+2025-01-05 17:43:47,576 - INFO - Network Event - DisruptionCheck: {'current_node': 'deep_space_relay_1', 'next_node': 'earth_relay_1', 'error_rate': 0.3, 'disruption_rate': 0.3}
+2025-01-05 17:43:47,576 - INFO - Bundle bundle_174341 - BundleStored at deep_space_relay_1
+Details: {'reason': 'disruption', 'buffer_size': 1}
+2025-01-05 17:43:47,576 - INFO - Bundle bundle_174341 - RecoveryAttempt at deep_space_relay_1 -> earth_relay_1 (Attempt 1/3)
+2025-01-05 17:43:48,577 - INFO - Bundle bundle_174341 - RecoveryAttempt at deep_space_relay_1 -> earth_relay_1 (Attempt 2/3)
+2025-01-05 17:43:49,579 - INFO - Bundle bundle_174341 - RecoverySuccess at deep_space_relay_1 -> earth_relay_1 (Recovered after 2 attempts)
+2025-01-05 17:43:49,580 - INFO - Bundle bundle_174341 - Transmission at deep_space_relay_1 -> earth_relay_1 (Success)
+Details: {'delay': 600, 'total_delay': 1200, 'distance': '50M km', 'retransmissions': 3}
+2025-01-05 17:43:51,165 - INFO - Network Event - DisruptionCheck: {'current_node': 'earth_relay_1', 'next_node': 'earth_station_1', 'error_rate': 0.3, 'disruption_rate': 0.3}
+2025-01-05 17:43:51,165 - INFO - Bundle bundle_174341 - Disruption at earth_relay_1 -> earth_station_1 (Failed)
+Details: {'delay': 180, 'distance': '400 km'}
+2025-01-05 17:43:51,165 - INFO - Network Event - DisruptionCheck: {'current_node': 'earth_relay_1', 'next_node': 'earth_station_1', 'error_rate': 0.3, 'disruption_rate': 0.3}
+2025-01-05 17:43:51,166 - INFO - Bundle bundle_174341 - Transmission at earth_relay_1 -> earth_station_1 (Success)
+Details: {'delay': 180, 'total_delay': 1380, 'distance': '400 km', 'retransmissions': 3}
+2025-01-05 17:43:52,750 - INFO - Network Event - SimulationComplete: {'bundle_id': 'bundle_174341', 'total_delay': 1380, 'total_retransmissions': 3, 'final_path': ['mars_orbiter_1', 'deep_space_relay_1', 'earth_relay_1', 'earth_relay_2', 'earth_station_2', 'earth_station_1'], 'disruptions': 3, 'disrupted_links': [('earth_relay_1', 'earth_station_1')], 'avg_recovery_time': 2.002899726231893, 'stored_bundles': 3, 'max_stored_bundles': 0, 'paths_attempted': 2, 'total_available_paths': 3, 'buffer_states': {'mars_base': 0, 'mars_orbiter_1': 0, 'deep_space_relay_1': 0, 'earth_relay_1': 0, 'mars_rover_2': 0, 'deep_space_relay_2': 0, 'earth_relay_2': 0, 'mars_rover_1': 0}, 'total_storage_events': 3, 'recovery_attempts': 3, 'successful_recoveries': 3, 'simulation_timestamp': '2025-01-05 17:43:52', 'source': 'mars_orbiter_1', 'destination': 'earth_station_1', 'message': 'Hello from mars_orbiter_1!'}
