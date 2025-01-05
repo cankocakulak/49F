@@ -132,17 +132,19 @@ class DTNResultsAnalyzer:
         retransmission_overhead = stats['total_retransmissions']
         storage_events = stats['total_storage_events']
         
-        # Calculate efficiency rate safely
-        if total_data_sent + retransmission_overhead > 0:
-            efficiency_rate = (total_data_sent / (total_data_sent + retransmission_overhead) * 100)
-        else:
-            efficiency_rate = 0
+        # Calculate efficiency rate
+        total_transmissions = len(stats['final_path']) - 1  # Number of hops actually used
+        total_attempts = stats['total_retransmissions'] + total_transmissions
+        efficiency_rate = (total_transmissions / total_attempts * 100) if total_attempts > 0 else 0
         
-        # Calculate recovery rate safely
-        if stats['recovery_attempts'] > 0:
-            recovery_rate = (stats['successful_recoveries'] / stats['recovery_attempts'] * 100)
-        else:
-            recovery_rate = 0
+        # Calculate recovery rate
+        total_disruptions = len(stats['disrupted_links'])
+        successful_recoveries = sum(1 for link in stats['disrupted_links'] 
+                                  if link not in [(path['path'][i], path['path'][i+1]) 
+                                                for path in stats['path_history'] 
+                                                if path['status'] == 'Failed' 
+                                                for i in range(len(path['path'])-1)])
+        recovery_rate = (successful_recoveries / total_disruptions * 100) if total_disruptions > 0 else 0
         
         # Build path history string
         path_history = "\nPath History:\n"
@@ -169,10 +171,10 @@ Complete Path Taken
 
 Disruption Analysis
 -----------------
-Total Disruptions: {stats['disruptions']}
+Total Disruptions: {total_disruptions}
 Disrupted Links: {', '.join([f"{src}->{dst}" for src, dst in stats['disrupted_links']])}
 Recovery Attempts: {stats['recovery_attempts']}
-Successful Recoveries: {stats['successful_recoveries']}
+Successful Recoveries: {successful_recoveries}
 Recovery Success Rate: {recovery_rate:.1f}%
 
 Storage Analysis
@@ -189,15 +191,15 @@ Average Hop Delay: {(stats['total_delay'] / len(stats['final_path'])) if stats['
 
 Performance Metrics
 ----------------
-Data Units Transmitted: {total_data_sent} bundles
-Retransmission Overhead: {retransmission_overhead} bundles
+Data Units Transmitted: {total_transmissions} bundles
+Retransmission Overhead: {stats['total_retransmissions']} bundles
 Efficiency Rate: {efficiency_rate:.1f}%
 
 DTN Advantages Demonstrated
 ------------------------
 1. Store and Forward: {storage_events} times utilized
 2. Path Flexibility: {stats['paths_attempted']} paths tried
-3. Disruption Handling: {stats['successful_recoveries']} successful recoveries
+3. Disruption Handling: {successful_recoveries} successful recoveries
 4. Data Preservation: {stats['stored_bundles']} bundles temporarily stored
 
 Message Details
@@ -208,7 +210,7 @@ Message: {stats['message']}
 Notes
 -----
 - Simulation used store-and-forward {storage_events} times to handle disruptions
-- {stats['successful_recoveries']} of {stats['disruptions']} disruptions were recovered from
+- {successful_recoveries} of {total_disruptions} disruptions were recovered from
 - Path changes occurred {stats['paths_attempted'] - 1} times during transmission
 """
 

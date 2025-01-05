@@ -1,0 +1,5 @@
+2025-01-05 19:37:34,740 - INFO - Network Event - LinkDisrupted: Link disrupted: earth_relay_1 -> earth_station_1
+2025-01-05 19:37:34,743 - INFO - Network Event - NewPath: Found new path from earth_relay_1: ['earth_relay_1', 'earth_relay_2', 'earth_station_2', 'earth_station_1']
+2025-01-05 19:37:36,408 - INFO - Network Event - LinkDisrupted: Link disrupted: earth_relay_2 -> earth_station_2
+2025-01-05 19:37:36,411 - INFO - Network Event - NewPath: Found new path from earth_relay_2: ['earth_relay_2', 'earth_relay_1', 'earth_station_1']
+2025-01-05 19:37:39,181 - INFO - Network Event - SimulationComplete: Simulation completed: Delivered
