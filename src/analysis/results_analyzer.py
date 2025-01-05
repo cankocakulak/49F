@@ -127,90 +127,92 @@ class DTNResultsAnalyzer:
 
     def _create_detailed_analysis(self, stats, sim_dir):
         """Create detailed performance analysis with focus on DTN advantages."""
-        # Calculate DTN efficiency metrics
-        total_data_sent = len(stats['final_path']) * 1  # 1 bundle per hop
+        # Calculate DTN efficiency metrics with safety checks
+        total_data_sent = len(stats['final_path']) if stats['final_path'] else 0
         retransmission_overhead = stats['total_retransmissions']
         storage_events = stats['total_storage_events']
         
-        # Calculate theoretical TCP/IP behavior
-        tcp_restarts = 0
-        tcp_total_data = 0
-        tcp_total_delay = 0
+        # Calculate efficiency rate safely
+        if total_data_sent + retransmission_overhead > 0:
+            efficiency_rate = (total_data_sent / (total_data_sent + retransmission_overhead) * 100)
+        else:
+            efficiency_rate = 0
         
-        for i in range(len(stats['final_path']) - 1):
-            node1, node2 = stats['final_path'][i], stats['final_path'][i + 1]
-            for link in self.topology['links']:
-                if (link['source'] == node1 and link['target'] == node2) or \
-                   (link['source'] == node2 and link['target'] == node1):
-                    delay = link['delay']
-                    distance = link['distance']
-                    
-                    if 'M km' in distance:  # Deep space links
-                        # TCP would likely timeout and restart
-                        tcp_restarts += stats['disruptions']  # Each disruption causes restart
-                        tcp_total_delay += delay * (tcp_restarts + 1)  # Cumulative delays
-                        tcp_total_data += (i + 1) * tcp_restarts  # Resend from beginning
-                    else:  # Near space links
-                        tcp_total_delay += delay
-                        tcp_total_data += 1
+        # Calculate recovery rate safely
+        if stats['recovery_attempts'] > 0:
+            recovery_rate = (stats['successful_recoveries'] / stats['recovery_attempts'] * 100)
+        else:
+            recovery_rate = 0
+        
+        # Build path history string
+        path_history = "\nPath History:\n"
+        for attempt in stats['path_history']:
+            path_history += f"\nAttempt {attempt['attempt']}:\n"
+            path_history += f"Planned Path: {' -> '.join(attempt['path'])}\n"
+            path_history += f"Status: {attempt['status']}\n"
         
         report = f"""DTN Performance Analysis
 ======================
-Timestamp: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}
+Timestamp: {stats['simulation_timestamp']}
 
-DTN Efficiency Metrics
----------------------
-- Total Path Length: {len(stats['final_path'])} hops
-- Data Units Transmitted: {total_data_sent} bundles
-- Retransmission Overhead: {retransmission_overhead} bundles
-- Storage Events: {storage_events}
-- Disruptions Handled: {stats['disruptions']}
+Route Information
+----------------
+Source: {stats['source']}
+Destination: {stats['destination']}
+Final Status: {stats['status']}
 
-Resource Utilization
-------------------
-- Storage Points Used: {len(stats['buffer_states'])} nodes
-- Maximum Stored Bundles: {stats['max_stored_bundles']}
-- Buffer States: {stats['buffer_states']}
-- Recovery Success Rate: {(stats['successful_recoveries'] / stats['recovery_attempts'] * 100 if stats['recovery_attempts'] > 0 else 100):.1f}%
+Complete Path Taken
+----------------
+{' -> '.join(stats['final_path']) if stats['final_path'] else 'No path completed'}
+
+{path_history}
+
+Disruption Analysis
+-----------------
+Total Disruptions: {stats['disruptions']}
+Disrupted Links: {', '.join([f"{src}->{dst}" for src, dst in stats['disrupted_links']])}
+Recovery Attempts: {stats['recovery_attempts']}
+Successful Recoveries: {stats['successful_recoveries']}
+Recovery Success Rate: {recovery_rate:.1f}%
+
+Storage Analysis
+--------------
+Storage Events: {storage_events}
+Max Stored Bundles: {stats['max_stored_bundles']}
+Buffer States at End:
+{chr(10).join([f"  {node}: {count} bundles" for node, count in stats['buffer_states'].items() if count > 0])}
 
 Time Analysis
-------------
-- Total Transmission Time: {stats['total_delay']} seconds ({stats['total_delay']/60:.1f} minutes)
-- Average Hop Delay: {stats['total_delay'] / len(stats['final_path']):.2f} seconds
-- Recovery Time: {stats['avg_recovery_time']:.1f} seconds per disruption
-- Total Distance: {self._calculate_total_distance(stats['final_path'])}
+-----------
+Total Transmission Time: {stats['total_delay']} seconds ({stats['total_delay']/60:.1f} minutes)
+Average Hop Delay: {(stats['total_delay'] / len(stats['final_path'])) if stats['final_path'] else 0:.2f} seconds
 
-Disruption Handling
------------------
-- Disrupted Links: {stats['disrupted_links']}
-- Recovery Attempts: {stats['recovery_attempts']}
-- Successful Recoveries: {stats['successful_recoveries']}
-- Average Recovery Time: {stats['avg_recovery_time']:.1f} seconds
+Performance Metrics
+----------------
+Data Units Transmitted: {total_data_sent} bundles
+Retransmission Overhead: {retransmission_overhead} bundles
+Efficiency Rate: {efficiency_rate:.1f}%
 
-DTN vs TCP/IP Comparison
-----------------------
-1. Data Transmission Efficiency:
-   - DTN Total Data Sent: {total_data_sent + retransmission_overhead} bundles
-   - TCP/IP Estimated Data: {tcp_total_data} units (with restarts)
-   - Data Overhead Saved: {tcp_total_data - (total_data_sent + retransmission_overhead)} units
+DTN Advantages Demonstrated
+------------------------
+1. Store and Forward: {storage_events} times utilized
+2. Path Flexibility: {stats['paths_attempted']} paths tried
+3. Disruption Handling: {stats['successful_recoveries']} successful recoveries
+4. Data Preservation: {stats['stored_bundles']} bundles temporarily stored
 
-2. Time Efficiency:
-   - DTN Total Time: {stats['total_delay']} seconds
-   - TCP/IP Estimated Time: {tcp_total_delay} seconds
-   - Time Saved: {tcp_total_delay - stats['total_delay']} seconds
+Message Details
+-------------
+Bundle ID: {stats['bundle_id']}
+Message: {stats['message']}
 
-3. Key DTN Advantages:
-   - Partial Progress Preserved: {storage_events} times
-   - Restart Prevention: {tcp_restarts} full restarts avoided
-   - Local Recovery Success: {stats['successful_recoveries']} times
-
-Note: TCP/IP estimates consider:
-- Full restart requirements after timeouts
-- No store-and-forward capability
-- Cumulative impact of disruptions
-- Deep space communication challenges
+Notes
+-----
+- Simulation used store-and-forward {storage_events} times to handle disruptions
+- {stats['successful_recoveries']} of {stats['disruptions']} disruptions were recovered from
+- Path changes occurred {stats['paths_attempted'] - 1} times during transmission
 """
-        
+
+        # Write the report to a file
         with open(sim_dir / "detailed_analysis.txt", "w") as f:
             f.write(report)
             

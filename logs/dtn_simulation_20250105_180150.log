@@ -1,0 +1,17 @@
+2025-01-05 18:01:50,786 - INFO - Network Event - AttemptingPath: {'path': ['mars_rover_1', 'mars_base', 'mars_orbiter_1', 'deep_space_relay_1', 'earth_relay_1', 'earth_station_1'], 'bundle': 'bundle_180150', 'estimated_delay': 1620}
+2025-01-05 18:01:50,786 - INFO - Network Event - DisruptionCheck: {'current_node': 'mars_rover_1', 'next_node': 'mars_base', 'error_rate': 0.3, 'disruption_rate': 0.3}
+2025-01-05 18:01:51,336 - INFO - Network Event - DisruptionCheck: {'current_node': 'mars_rover_1', 'next_node': 'mars_base', 'error_rate': 0.3, 'disruption_rate': 0.3}
+2025-01-05 18:01:51,900 - INFO - Network Event - DisruptionCheck: {'current_node': 'mars_rover_1', 'next_node': 'mars_base', 'error_rate': 0.3, 'disruption_rate': 0.3}
+2025-01-05 18:01:52,486 - INFO - Network Event - DisruptionCheck: {'current_node': 'mars_rover_1', 'next_node': 'mars_base', 'error_rate': 0.3, 'disruption_rate': 0.3}
+2025-01-05 18:01:53,075 - INFO - Network Event - DisruptionCheck: {'current_node': 'mars_rover_1', 'next_node': 'mars_base', 'error_rate': 0.3, 'disruption_rate': 0.3}
+2025-01-05 18:01:53,664 - INFO - Network Event - DisruptionCheck: {'current_node': 'mars_rover_1', 'next_node': 'mars_base', 'error_rate': 0.3, 'disruption_rate': 0.3}
+2025-01-05 18:01:54,248 - INFO - Network Event - DisruptionCheck: {'current_node': 'mars_rover_1', 'next_node': 'mars_base', 'error_rate': 0.3, 'disruption_rate': 0.3}
+2025-01-05 18:01:54,249 - INFO - Bundle bundle_180150 - Transmission at mars_rover_1 -> mars_base (Success)
+Details: {'delay': 60, 'total_delay': 60, 'distance': '100 km', 'retransmissions': 0}
+2025-01-05 18:01:55,808 - INFO - Network Event - DisruptionCheck: {'current_node': 'mars_base', 'next_node': 'mars_orbiter_1', 'error_rate': 0.3, 'disruption_rate': 0.3}
+2025-01-05 18:01:56,424 - INFO - Network Event - DisruptionCheck: {'current_node': 'mars_base', 'next_node': 'mars_orbiter_1', 'error_rate': 0.3, 'disruption_rate': 0.3}
+2025-01-05 18:01:56,424 - INFO - Bundle bundle_180150 - Disruption at mars_base -> mars_orbiter_1 (Failed)
+Details: {'delay': 180, 'distance': '400 km'}
+2025-01-05 18:01:56,424 - INFO - Network Event - DisruptionCheck: {'current_node': 'mars_base', 'next_node': 'mars_orbiter_1', 'error_rate': 0.3, 'disruption_rate': 0.3}
+2025-01-05 18:01:56,425 - INFO - Bundle bundle_180150 - Transmission at mars_base -> mars_orbiter_1 (Success)
+Details: {'delay': 180, 'total_delay': 240, 'distance': '400 km', 'retransmissions': 0}
