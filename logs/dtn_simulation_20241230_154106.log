@@ -1,6 +1,0 @@
-2024-12-30 15:41:09,383 - INFO - Network Event - PathsFound: {'num_paths': 1, 'paths': [['mars_rover_1', 'mars_base', 'mars_orbiter_1', 'deep_space_relay_1', 'earth_relay_1', 'earth_station_1']], 'delays': {"['mars_rover_1', 'mars_base', 'mars_orbiter_1', 'deep_space_relay_1', 'earth_relay_1', 'earth_station_1']": 1620}}
-2024-12-30 15:41:09,384 - INFO - Network Event - AttemptingPath: {'path': ['mars_rover_1', 'mars_base', 'mars_orbiter_1', 'deep_space_relay_1', 'earth_relay_1', 'earth_station_1'], 'bundle': 'bundle_154109', 'estimated_delay': 1620}
-2024-12-30 15:41:09,385 - INFO - Bundle bundle_154109 - Disruption at mars_rover_1 -> mars_base (Failed)
-Details: {'delay': 60, 'distance': '100 km'}
-2024-12-30 15:41:09,385 - INFO - Network Event - PathDisrupted: {'path': ['mars_rover_1', 'mars_base', 'mars_orbiter_1', 'deep_space_relay_1', 'earth_relay_1', 'earth_station_1'], 'total_delay': 0, 'disrupted_at': 'mars_rover_1'}
-2024-12-30 15:41:09,385 - INFO - Network Event - SimulationComplete: {'bundle_id': 'bundle_154109', 'total_delay': 0, 'total_retransmissions': 1, 'final_path': ['mars_rover_1', 'mars_base', 'mars_orbiter_1', 'deep_space_relay_1', 'earth_relay_1', 'earth_station_1'], 'disruptions': 1, 'paths_attempted': 1, 'total_available_paths': 1}
