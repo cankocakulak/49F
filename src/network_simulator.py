@@ -130,7 +130,7 @@ class SimpleNetworkSimulator(NetworkSimulatorBase):
             
             next_node = current_path[current_idx + 1]
             
-            # Check for disruption
+            # Check for disruption or error
             is_error = random.random() < self.config.get_simulation_params()["network"]["error_rate"]
             is_disrupted = random.random() < self.config.get_simulation_params()["network"]["disruption_rate"]
             
