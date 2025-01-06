@@ -1,0 +1,4 @@
+2025-01-06 12:47:17,887 - INFO - Network Event - LinkDisrupted: Link disrupted: mars_orbiter_1 -> deep_space_relay_1
+2025-01-06 12:47:17,890 - INFO - Network Event - NewPath: Found new path from mars_orbiter_1: ['mars_orbiter_1', 'mars_orbiter_2', 'deep_space_relay_2', 'earth_relay_2', 'earth_station_2', 'earth_station_1']
+2025-01-06 12:47:22,264 - INFO - Network Event - LinkDisrupted: Link disrupted: earth_relay_2 -> earth_station_2
+2025-01-06 12:47:22,265 - INFO - Network Event - NewPath: Found new path from earth_relay_2: ['earth_relay_2', 'earth_relay_1', 'earth_station_1']
