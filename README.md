@@ -13,6 +13,7 @@ Install the dependencies:
 ```
 pip install -r requirements.txt
 
+Run the simulation:
 
 ```
 python examples/run_simulation.py
